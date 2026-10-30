@@ -1,0 +1,1493 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b2a19">
+<meta name="robots" content="noindex, nofollow">
+<title>McCourt Equipment &mdash; Quoting App</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='none' stroke='%231f9a4e' stroke-width='8'/%3E%3Cpath d='M26 72V30h12l12 18 12-18h12v42H62V50L50 66 38 50v22z' fill='%231f9a4e'/%3E%3Cpath d='M34 74L74 24' stroke='%23f5e93b' stroke-width='9'/%3E%3C/svg%3E">
+</head>
+<body>
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   McCourt Equipment — sales quoting app, mobile wireframes
+   Prepared by DMC Consultancy Ltd.
+
+   One file. Screen layout follows the existing sales app (home tiles, + menu,
+   My Account counts, customers, show leads, requested equipment); content is
+   re-cut for McCourt: US dollars and sales tax, sale and rental quotes,
+   freight, and the crushing / screening / washing / organics range.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root{
+  /* Presentation frame */
+  --f-bg:#07160e; --f-panel:#0d2217; --f-line:#1c3a29;
+  --f-ink:#eef5f0; --f-ink-2:#9fb5a7; --f-ink-3:#6c8576;
+  --bezel:#1a1d1b; --bezel-edge:#3a3f3c;
+
+  /* App. Green and yellow off the McCourt mark. */
+  --bg:#f2f4f1; --card:#fff;
+  --ink:#13201a; --ink-2:#4b5b52; --ink-3:#86938b;
+  --line:#e0e6e1; --field:#f1f5f2;
+  --g:#1f9a4e;          /* logo green — primary actions */
+  --g-2:#147a3c;        /* pressed / green text on white */
+  --g-soft:#e3f4e9;
+  --g-d:#0b2a19;        /* deep green — headers, secondary actions */
+  --g-dd:#061a0f;
+  --y:#f5e93b;          /* logo yellow — accents; dark text on it */
+  --y-soft:#fdf9d6;
+  --blue:#2563eb; --blue-soft:#e8effd;
+  --amber:#b45f06; --amber-soft:#fdf0d9;
+  --red:#c2362b; --red-soft:#fbe9e7;
+  --grey:#5f6a64; --grey-soft:#eceeec;
+  --shadow:0 1px 2px rgba(10,30,18,.06),0 2px 8px rgba(10,30,18,.05);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--f-bg);color:var(--f-ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+button:disabled{cursor:default}
+:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.i.xs{width:13px;height:13px;vertical-align:-2px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ── Presentation stage ───────────────────────────────────────────────────── */
+.stage{min-height:100%;display:flex;gap:48px;justify-content:center;align-items:flex-start;padding:36px 24px}
+.rail{width:300px;flex:none;position:sticky;top:36px;max-height:calc(100vh - 72px);overflow-y:auto;scrollbar-width:thin}
+.rail img{width:220px;display:block;margin-bottom:22px}
+.rail h1{font-size:20px;line-height:1.25;margin:0 0 6px;letter-spacing:-.01em}
+.rail p.lede{color:var(--f-ink-2);font-size:13.5px;margin:0 0 18px}
+.rail h2{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--f-ink-3);margin:16px 0 4px}
+.rail .jump{display:flex;width:100%;text-align:left;padding:5px 10px;border-radius:8px;color:var(--f-ink-2);font-size:13.5px}
+.rail .jump:hover{background:var(--f-panel);color:var(--f-ink)}
+.rail .jump.on{background:var(--f-panel);color:var(--y);box-shadow:inset 2px 0 0 var(--y)}
+.rail .foot{margin-top:22px;padding-top:14px;border-top:1px solid var(--f-line);color:var(--f-ink-3);font-size:12px}
+.notes{width:280px;flex:none;position:sticky;top:36px;background:var(--f-panel);border:1px solid var(--f-line);border-radius:14px;padding:18px 18px 8px}
+.notes h3{margin:0 0 4px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--y)}
+.notes .t{font-size:16px;font-weight:650;margin:0 0 10px}
+.notes ul{margin:0;padding:0 0 0 18px;color:var(--f-ink-2);font-size:13px}
+.notes li{margin:0 0 9px}
+@media (max-width:1240px){.notes{display:none}}
+
+.device{width:390px;height:844px;flex:none;border-radius:54px;background:var(--bezel);padding:12px;box-shadow:0 0 0 2px var(--bezel-edge),0 30px 80px rgba(0,0,0,.55)}
+.screen{position:relative;width:100%;height:100%;border-radius:43px;overflow:hidden;background:var(--bg);color:var(--ink);display:flex;flex-direction:column}
+.sbar{height:46px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 6px 34px;font-size:14px;font-weight:600;background:var(--g-d);color:#fff;position:relative}
+.screen[data-hdr=light] .sbar{background:#fff;color:var(--ink)}
+.sbar::after{content:"";position:absolute;left:50%;top:10px;width:110px;height:30px;margin-left:-55px;background:#000;border-radius:20px}
+.sbar .sig{display:flex;gap:5px;align-items:center}
+.sbar .bat{width:24px;height:11px;border:1.5px solid currentColor;border-radius:3px;position:relative}
+.sbar .bat::after{content:"";position:absolute;inset:1.5px;right:6px;background:currentColor;border-radius:1px}
+
+/* Phone widths: the app IS the screen, no frame or rails. */
+@media (max-width:760px){
+  body{background:var(--bg)}
+  .stage{padding:0;display:block}
+  .rail,.notes{display:none}
+  .device{width:100%;height:100dvh;border-radius:0;padding:0;box-shadow:none;background:none}
+  .screen{border-radius:0}
+  .sbar{display:none}
+  .hdr{padding-top:max(12px,env(safe-area-inset-top))!important}
+}
+
+/* ── App chrome ───────────────────────────────────────────────────────────── */
+.hdr{flex:none;background:var(--g-d);color:#fff;padding:10px 12px 12px 14px;display:flex;align-items:center;gap:8px;min-height:60px}
+.hdr .back{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;margin-left:-6px;color:#fff}
+.hdr .back svg.i{width:24px;height:24px}
+.hdr .ttl{flex:1;min-width:0}
+.hdr .ttl b{display:block;font-size:19px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
+.hdr .ttl small{display:block;color:#a9c4b2;font-size:12px;margin-top:-1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:inherit;position:relative}
+.hdr .ic svg.i{width:23px;height:23px}
+.hdr .ic .dot{position:absolute;top:8px;right:8px;width:9px;height:9px;border-radius:50%;background:var(--y);box-shadow:0 0 0 2px var(--g-d)}
+.hdr.light{background:#fff;color:var(--ink);border-bottom:1px solid var(--line)}
+.hdr.light .back{color:var(--g-2)}
+.hdr.light .ttl small{color:var(--ink-3)}
+/* Home header */
+.hdr.home{flex-direction:column;align-items:stretch;padding:12px 18px 22px;gap:0;position:relative;overflow:hidden}
+.hdr.home::after{content:"";position:absolute;right:-50px;bottom:-90px;width:220px;height:220px;border-radius:50%;border:16px solid rgba(31,154,78,.25)}
+.hdr.home::before{content:"";position:absolute;right:40px;bottom:-40px;width:16px;height:170px;background:rgba(245,233,59,.18);transform:rotate(40deg);transform-origin:bottom}
+.hdr.home .hrow{display:flex;align-items:center;position:relative;z-index:1}
+.hdr.home img{height:34px;display:block}
+.hdr.home .gm{font-size:16px;color:#cfe0d4;margin-top:16px}
+.hdr.home .gn{font-size:30px;font-weight:750;line-height:1.1;letter-spacing:-.01em}
+.hdr.home .wx{text-align:right;font-size:14px;color:#cfe0d4}
+.hdr.home .wx svg.i{color:var(--y);width:26px;height:26px;display:block;margin:0 0 2px auto}
+.hdr.home .wx small{display:block;font-size:11.5px;color:#8fae9a}
+
+.body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:16px 16px 26px}
+.foot{flex:none;background:var(--card);border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:10px}
+.foot:empty{display:none}
+.tabs{flex:none;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;padding:6px 20px calc(8px + env(safe-area-inset-bottom))}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:600;color:var(--ink-3);padding:4px 8px;min-width:80px}
+.tab svg.i{width:24px;height:24px}
+.tab.on{color:var(--g-2)}
+.tab.plus{width:64px;height:58px;border-radius:20px;background:var(--g);color:#fff;justify-content:center;margin-top:-30px;box-shadow:0 8px 18px rgba(31,154,78,.4);min-width:0;padding:0}
+.tab.plus svg{width:28px;height:28px;stroke-width:2.4}
+@media (min-width:761px){.tabs{padding-bottom:18px}}
+
+/* ── Building blocks ──────────────────────────────────────────────────────── */
+.card{background:var(--card);border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
+.card.tap{cursor:pointer}
+.sec{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:18px 2px 8px}
+.sec:first-child{margin-top:2px}
+.sh2{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px;margin:24px 0 14px}
+.sh2:first-child{margin-top:4px}
+.sh2 h4{margin:0;color:var(--g-2);letter-spacing:.09em;text-transform:uppercase;font-size:13.5px;font-weight:750}
+.sh2 h4 i{font-style:normal;text-transform:none;letter-spacing:0;font-weight:500;color:var(--ink-3)}
+.row{display:flex;align-items:center;gap:8px}
+.sp{flex:1;min-width:0}
+.mut{color:var(--ink-3)}
+.sm{font-size:13px}
+.xs{font-size:12px}
+.b{font-weight:650}
+.num{font-variant-numeric:tabular-nums}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:650;padding:3px 10px;border-radius:999px;white-space:nowrap;background:var(--grey-soft);color:var(--grey)}
+.pill.green{background:var(--g-soft);color:var(--g-2)}
+.pill.blue{background:var(--blue-soft);color:var(--blue)}
+.pill.amber{background:var(--amber-soft);color:var(--amber)}
+.pill.red{background:var(--red-soft);color:var(--red)}
+.pill.dark{background:var(--g-d);color:var(--y)}
+.pill.yel{background:var(--y-soft);color:#6b6200}
+.chipdate{font-size:12.5px;font-weight:600;background:var(--grey-soft);color:var(--ink-2);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.hash{font-size:14px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:46px;padding:0 16px;border-radius:14px;font-weight:650;font-size:15px;background:var(--grey-soft);color:var(--ink);white-space:nowrap}
+.btn.pri{background:var(--g);color:#fff}
+.btn.pri:active{background:var(--g-2)}
+.btn.dk{background:var(--g-d);color:#fff}
+.btn.view{background:var(--g-soft);color:var(--g-2)}
+.btn.send{background:var(--y);color:var(--g-dd)}
+.btn.ghost{background:transparent;border:1.5px solid var(--line)}
+.btn.off{background:var(--grey-soft);color:var(--ink-3)}
+.btn.full{width:100%}
+.btn.grow{flex:1}
+.btn.sm{height:36px;padding:0 12px;font-size:13.5px;border-radius:10px}
+.btn.add{height:36px;padding:0 14px;font-size:14px;border-radius:10px;background:var(--g);color:#fff}
+.btn.add svg.i{width:16px;height:16px;stroke-width:2.4}
+.btn.tiny{height:32px;padding:0 12px;font-size:13px;border-radius:9px;background:var(--g-d);color:#fff;margin-top:8px}
+.btn svg.i{width:18px;height:18px}
+.acts{display:flex;gap:8px;margin-top:14px}
+.acts .btn{flex:1;height:44px;padding:0 8px;font-size:14.5px}
+.acts .btn.wide{flex:1.6}
+
+.search{display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:0 14px;height:50px;margin-bottom:12px;flex:1}
+.search input{border:0;outline:0;flex:1;background:none;font-size:16px;min-width:0}
+.search svg{color:var(--ink-3)}
+.filter{display:flex;gap:10px;margin-bottom:6px}
+.filter select.inp{height:50px;min-width:0}
+.filter .search{min-width:0}
+.fchip{display:inline-flex;align-items:center;gap:6px;background:var(--g-d);color:#fff;border-radius:999px;padding:5px 8px 5px 12px;font-size:13px;font-weight:600;margin-bottom:12px}
+.fchip svg.i{width:15px;height:15px}
+
+/* Forms */
+.fld{margin-bottom:14px}
+.fld>label,.lbl{display:flex;justify-content:space-between;font-size:14.5px;font-weight:650;color:var(--ink);margin:0 0 6px 2px}
+.fld>label i,.lbl i{font-style:normal;font-weight:500;color:var(--ink-3)}
+.inp{width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 14px;background:var(--field);font-size:16px;outline:0}
+textarea.inp{height:auto;min-height:84px;padding:12px 14px;resize:vertical;line-height:1.45}
+select.inp{appearance:none;background:var(--field) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234b5b52' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center/20px;padding-right:42px}
+.inp:focus{border-color:var(--g);background-color:#fff}
+.inp.err{border-color:var(--red);background-color:var(--red-soft)}
+.inp[readonly]{color:var(--ink-2)}
+.pre{position:relative}
+.pre span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-3);font-weight:600}
+.pre .inp{padding-left:28px}
+.pre.suf span{left:auto;right:14px}
+.pre.suf .inp{padding-left:14px;padding-right:30px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g21{display:grid;grid-template-columns:1.55fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.seg{display:flex;background:var(--grey-soft);border-radius:14px;padding:3px;gap:3px}
+.seg button{flex:1;height:42px;border-radius:11px;font-weight:650;font-size:14px;color:var(--ink-2)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.hint{font-size:12.5px;color:var(--ink-3);margin:6px 2px 0;display:flex;gap:5px;align-items:flex-start}
+.hint svg.i{width:14px;height:14px;margin-top:2px}
+.empty-note{color:var(--ink-3);font-size:14.5px;margin:-2px 0 6px}
+.switch{display:flex;align-items:center;gap:12px;padding:4px 0;cursor:pointer;width:100%;text-align:left}
+.switch .tr{width:46px;height:28px;border-radius:999px;background:#cfd6d1;position:relative;flex:none;transition:background .15s}
+.switch .tr::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .15s}
+.switch.on .tr{background:var(--g)}
+.switch.on .tr::after{left:21px}
+.switch b{display:block;font-size:14.5px}
+.switch small{display:block;color:var(--ink-3);font-size:12.5px}
+.stars{display:flex;gap:8px}
+.stars button{flex:1;height:46px;border-radius:12px;background:var(--grey-soft);color:var(--ink-2);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:2px}
+.stars button.on{background:var(--y);color:var(--g-dd)}
+.stars svg.i{fill:currentColor;stroke:none;width:13px;height:13px}
+.rate{display:inline-flex;gap:1px;color:#c9a800;vertical-align:-2px}
+.rate svg.i{width:15px;height:15px;fill:currentColor;stroke:none}
+.rate .off{color:#d4dad6}
+
+/* Item editor */
+.item{border:1.5px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px;background:var(--field)}
+.item .inp{background-color:#fff}
+.item .ih{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.item .ih b{font-size:15px;color:var(--g-d)}
+.item .rm{color:var(--red);font-size:13px;font-weight:650;display:flex;gap:4px;align-items:center}
+.item .rm svg.i{width:16px;height:16px}
+
+/* Totals */
+.tot .l{display:flex;justify-content:space-between;padding:5px 0;font-size:14px}
+.tot .l.grand{border-top:1.5px solid rgba(255,255,255,.15);margin-top:6px;padding-top:10px;font-weight:750;font-size:18px}
+.tot .l.dep{font-size:13px}
+.tot.dark{background:var(--g-d);color:#fff;border:0}
+.tot.dark .l{color:#b5ccbd}
+.tot.dark .l.grand{color:#fff}
+.tot.dark .l.grand span:last-child{color:var(--y)}
+.tot.dark .l.neg span:last-child{color:#7fe0a5}
+.tot.dark .l.dep{color:#8fae9a}
+
+/* Home tiles */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;text-align:left;display:flex;flex-direction:column;gap:12px;min-height:150px;position:relative}
+.tile .ti{width:52px;height:52px;border-radius:14px;background:var(--g-soft);color:var(--g-2);display:grid;place-items:center}
+.tile .ti.y{background:var(--y-soft);color:#7a6f00}
+.tile .ti.d{background:var(--g-d);color:var(--y)}
+.tile .ti svg.i{width:26px;height:26px}
+.tile b{font-size:17px;line-height:1.2;display:block}
+.tile small{display:block;color:var(--ink-3);font-size:13px;margin-top:2px}
+.tile .cnt{position:absolute;top:14px;right:14px}
+
+/* List cards */
+.lc .nm{font-size:18px;font-weight:700;line-height:1.25}
+.lc .meta{font-size:14.5px;color:var(--ink-2);margin-top:3px}
+.lc .tag{font-size:12px;color:var(--ink-3);margin-top:2px}
+.stk{border-left:6px solid var(--line)}
+.stk.a2{border-left-color:#e8a23c}
+.stk.a3{border-left-color:var(--red)}
+.stk .model{font-size:18px;font-weight:750;text-transform:uppercase;letter-spacing:.01em}
+.stk .age{font-size:15px;font-weight:650}
+.stk.a3 .age{color:var(--red)}
+.stk.a2 .age{color:var(--amber)}
+.ph{height:150px;border-radius:14px;background:repeating-linear-gradient(135deg,#e7ece8 0 12px,#eef2ef 12px 24px);display:grid;place-items:center;color:#95a59b;margin-bottom:12px;font-size:12px;font-weight:650;text-align:center}
+.ph svg.i{width:40px;height:40px;margin:0 auto 4px;display:block;stroke-width:1.4}
+.brand{font-size:11px;font-weight:750;letter-spacing:.07em;text-transform:uppercase;color:var(--g-2)}
+
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.kv:last-child{border-bottom:0}
+.kv span:first-child{color:var(--ink-3)}
+.kv span:last-child{text-align:right;font-weight:600}
+.banner{display:flex;gap:10px;align-items:flex-start;background:var(--g-soft);color:var(--g-2);border-radius:12px;padding:11px 12px;font-size:13.5px;margin-bottom:12px}
+.banner.y{background:var(--y-soft);color:#6b6200}
+.banner.b{background:var(--blue-soft);color:var(--blue)}
+.banner svg.i{margin-top:1px}
+.tl{position:relative;padding-left:18px}
+.tl .n{position:relative;padding-bottom:14px}
+.tl .n::before{content:"";position:absolute;left:-14px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--g)}
+.tl .n::after{content:"";position:absolute;left:-10px;top:17px;bottom:0;width:1.5px;background:var(--line)}
+.tl .n:last-child::after{display:none}
+.empty{text-align:center;color:var(--ink-3);padding:30px 10px;font-size:14px}
+
+/* Account */
+.acc h3{font-size:20px;font-weight:650;margin:22px 4px 12px}
+.acc h3:first-child{margin-top:6px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:16px;text-align:left;min-height:132px;display:flex;flex-direction:column}
+.stat .n{font-size:34px;font-weight:700;color:var(--g-2);line-height:1.1}
+.stat .pl{width:46px;height:46px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;margin-bottom:6px}
+.stat .pl svg.i{width:24px;height:24px;stroke-width:2.4}
+.stat b{font-size:17px;margin-top:6px}
+.stat small{color:var(--ink-3);font-size:13px;line-height:1.3}
+.logout{width:100%;height:54px;border-radius:16px;background:var(--red-soft);color:var(--red);font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:22px}
+
+/* Sheets, modals, toast */
+.scrim{position:absolute;inset:0;background:rgba(5,18,10,.5);z-index:40;display:flex;align-items:flex-end;animation:fade .15s}
+.scrim.center{align-items:center;padding:20px}
+.sheet{background:var(--bg);width:100%;border-radius:24px 24px 0 0;max-height:88%;display:flex;flex-direction:column;animation:up .2s ease-out}
+.scrim.center .sheet{border-radius:20px;animation:pop .18s ease-out}
+.sheet .sh{display:flex;align-items:center;padding:16px 16px 8px;gap:8px}
+.sheet .sh b{font-size:18px;flex:1}
+.sheet .sh.c b{text-align:center;font-size:21px}
+.sheet .sh .x{width:34px;height:34px;border-radius:50%;background:var(--grey-soft);display:grid;place-items:center}
+.sheet .sb{overflow-y:auto;padding:4px 16px 22px}
+.sheet .grab{width:44px;height:5px;border-radius:3px;background:#cdd5cf;margin:10px auto 0}
+.cbar{display:flex;align-items:center;gap:14px;width:100%;height:62px;border-radius:18px;padding:0 20px;font-weight:700;font-size:17.5px;color:#fff;margin-bottom:10px;text-align:left;box-shadow:0 3px 10px rgba(10,30,18,.12)}
+.cbar svg.i{width:24px;height:24px}
+.cbar .sp{flex:1}
+.cbar.c1{background:var(--g)}
+.cbar.c2{background:var(--g-d)}
+.cbar.c3{background:var(--y);color:var(--g-dd)}
+.cbar.c4{background:#fff;color:var(--g-d);border:2px solid var(--g)}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border-radius:14px;padding:12px;margin-bottom:8px;box-shadow:var(--shadow)}
+.opt .oi{width:42px;height:42px;border-radius:12px;background:var(--g-soft);color:var(--g-2);display:grid;place-items:center;flex:none}
+.opt b{display:block;font-size:15px}
+.opt small{display:block;color:var(--ink-3);font-size:12.5px}
+.toast{position:absolute;left:14px;right:14px;bottom:100px;z-index:60;background:var(--g-dd);color:#fff;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:up .2s ease-out}
+.toast svg.i{color:var(--y)}
+.toast.bad svg.i{color:#ff8f84}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* Quote document */
+.doc{background:#fff;border-radius:6px;box-shadow:0 2px 14px rgba(0,0,0,.12);font-size:10.5px;line-height:1.45;color:#1b2520;overflow:hidden}
+.doc .dh{background:var(--g-d);padding:14px 14px 12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;border-bottom:4px solid var(--y)}
+.doc .dh img{height:30px}
+.doc .dh .q{color:#fff;text-align:right}
+.doc .dh .q b{display:block;font-size:17px;letter-spacing:.14em}
+.doc .dh .q span{color:#a9c4b2;font-size:9.5px}
+.doc .dp{padding:12px 14px}
+.doc .dg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.doc h6{margin:0 0 3px;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:#7b8a81}
+.doc table{width:100%;border-collapse:collapse;margin-bottom:10px}
+.doc th{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;text-align:left;background:#eef3ef;padding:6px;color:#4b5b52}
+.doc td{padding:7px 6px;border-bottom:1px solid #e7ece8;vertical-align:top}
+.doc .r{text-align:right;white-space:nowrap}
+.doc .dt{margin-left:auto;width:66%}
+.doc .dt div{display:flex;justify-content:space-between;padding:2.5px 0}
+.doc .dt .gt{border-top:1.5px solid #1b2520;margin-top:4px;padding-top:6px;font-weight:800;font-size:12.5px}
+.doc .terms{margin-top:12px;padding-top:10px;border-top:1px solid #e7ece8;color:#4b5b52}
+.doc .df{background:#eef3ef;padding:9px 14px;font-size:9px;color:#4b5b52;display:flex;flex-wrap:wrap;gap:4px 12px}
+.sig{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.sig div{border-top:1px solid #1b2520;padding-top:3px;font-size:8.5px;color:#7b8a81}
+</style>
+
+<div class="stage">
+  <aside class="rail" id="rail"></aside>
+  <div class="device">
+    <div class="screen" id="screen">
+      <div class="sbar"><span id="clock">9:41</span><span class="sig"><svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg><span class="bat"></span></span></div>
+      <header class="hdr" id="hdr"></header>
+      <main class="body" id="body"></main>
+      <div class="foot" id="foot"></div>
+      <nav class="tabs" id="tabs"></nav>
+      <div id="layer"></div>
+    </div>
+  </div>
+  <aside class="notes" id="notes"></aside>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Data. Everything lives in the tab and reseeds on reload; dates are relative
+   to today so the story reads the same whenever it is shown.
+   Equipment, yards and sales team are from mccourtequipment.com.
+   Customers are invented. Prices are illustrative unless the site lists one.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const LOGO = 'mccourt-logo.png';
+const COMPANY = {
+  name:'McCourt Equipment, Inc.',
+  hq:'5141 West State Hwy 71, La Grange, TX 78945',
+  main:'(979) 242-5298', tollfree:'(888) 838-9252', service:'(979) 800-3773',
+  web:'mccourtequipment.com',
+  yards:['La Grange, TX','Fort Worth, TX','Odessa, TX','Lakeland, FL']
+};
+const REPS = [
+  {name:'Ryan Kays',   area:'Central Texas'},
+  {name:'Sam Welch',   area:'San Antonio'},
+  {name:'Greg Vasut',  area:'Major Producers'},
+  {name:'Justin Cash', area:'South Texas'},
+  {name:'Angie Hogan', area:'North Texas'},
+  {name:'Tom Bond',    area:'Florida'}
+];
+const TYPES = ['Crushers','Screeners','Washers','Conveyors & Stackers','Feeders','Plants','Organics'];
+const LEAD_STATUS = ['New','Contacted','In Progress','On Hold','Closed/Won','Lost Sale'];
+const SHOWS = ['AGG1 Aggregates Academy & Expo','ConExpo-Con/Agg','TACA Annual Meeting','US Composting Council (COMPOST)','Florida Organics Recyclers'];
+const DEFAULT_TERMS = 'Prices are FOB La Grange, TX unless freight is shown. Items ordered from the manufacturer require a 10% deposit. Initial setup and general instruction included at delivery; additional setup or training billed as field service.';
+const RENTAL_TERMS = 'Minimum rental period is one month. Initial setup and general instruction included at delivery. 24/7 product support available on request, billable if applicable. Credit application required.';
+
+/* Product catalogue for the "Select product" lists — the McCourt new-equipment
+   range. Stock machines not in the catalogue (used units) are added below. */
+const CATALOGUE = [
+  ['McCloskey','J4','Crushers','Tracked jaw crusher · 44" × 28" jaw · CAT C9.3B 300 hp',785000,58000],
+  ['McCloskey','J4R','Crushers','Tracked jaw crusher with recirculating screen',845000,61000],
+  ['McCloskey','J6','Crushers','Tracked jaw crusher · 50" × 32" jaw',948000,null],
+  ['McCloskey','I4C','Crushers','Tracked impact crusher · closed circuit with recirculating screen',835000,61000],
+  ['Lippmann','1200JE','Crushers','Electric-drive jaw crusher · 42" × 30" jaw',912000,null],
+  ['McCloskey','S190','Screeners','Double deck screener · 20′ × 5′ box',465000,26500],
+  ['Lippmann','L516R','Screeners','Tracked 5′ × 16′ screener with recirculation',418000,null],
+  ['MWS','Sand Screw 3625','Washers','Fine material washer · 36" single screw × 25′',132000,null],
+  ['MWS','Sand Screw 4432','Washers','Fine material washer · 44" single screw × 32′',168500,null],
+  ['MWS','620 SandStorm','Washers','Portable sand classifying & dewatering plant',398000,null],
+  ['McCloskey','ST80T','Conveyors & Stackers','Tracked stacker · 80′',248000,11500],
+  ['McCloskey','SDX-130','Conveyors & Stackers','Telescoping stacking conveyor · 130′',392000,null],
+  ['Superior','36X100 PRSC','Conveyors & Stackers','Portable radial stacking conveyor · 36" × 100′',214000,9800],
+  ['Superior','48" RazerTail','Conveyors & Stackers','Truck unloader · 48" belt',128000,null],
+  ['McCloskey','UF1200','Feeders','Mobile feeder · 12 yd³ hopper',198000,null],
+  ['Superior','PFH15 Feed Hopper','Feeders','Portable feed hopper · 15 yd³',96500,5200],
+  ['Superior','Sentry 4250 HSI Plant','Plants','Portable closed-circuit horizontal shaft impact plant',1240000,null],
+  ['McCloskey Environmental','733RE','Organics','Tracked trommel screener · 7′ drum',495000,28000],
+  ['McCloskey Environmental','ET-620','Organics','Trommel screener · 6′ drum',412000,null],
+  ['Doppstadt','SM720 Plus','Organics','Trommel screen',520000,null],
+  ['Doppstadt','DW3060K','Organics','Slow-speed shredder',610000,null],
+  ['Doppstadt','Inventhor 6','Organics','Universal shredder / grinder',560000,30000],
+  ['Backhus','A60','Organics','Windrow compost turner',395000,null],
+  ['MDS','M515','Organics','Split-track trommel',455000,null]
+].map(([brand,model,type,desc,price,rent]) => ({key:brand+'|'+model, brand, model, type, desc, price, rent}));
+
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+const iso = x => `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+const dd = n => { const x = new Date(TODAY); x.setDate(x.getDate()+n); return iso(x); };
+const daysFrom = s => Math.round((new Date(s+'T00:00') - TODAY)/864e5);
+
+function seed(){
+  const customers = [
+    {id:'C1', name:'Dale Whitaker', company:'Brazos Valley Aggregates', email:'dale@brazosvalleyagg.com', phone:'(979) 555-0148', address:'4100 FM 1774', city:'Navasota, TX', zip:'77868', cert:'', added:dd(-410)},
+    {id:'C2', name:'Luis Ortega', company:'Permian Basin Materials', email:'luis@pbmaterials.com', phone:'(432) 555-0119', address:'9200 W Interstate 20', city:'Odessa, TX', zip:'79763', cert:'TX 01-339 manufacturing exemption', added:dd(-300)},
+    {id:'C3', name:'Marie Dupree', company:'Gulf Coast Organics', email:'marie@gulfcoastorganics.com', phone:'(863) 555-0172', address:'1450 Mine Rd', city:'Bartow, FL', zip:'33830', cert:'', added:dd(-190)},
+    {id:'C4', name:'Bo Kessler', company:'Hill Country Rock & Sand', email:'bo@hcrocksand.com', phone:'(830) 555-0164', address:'2601 Hwy 281 N', city:'Marble Falls, TX', zip:'78654', cert:'', added:dd(-150)},
+    {id:'C5', name:'Wes Pruitt', company:'Colorado River Sand & Gravel', email:'wes@crsandgravel.com', phone:'(512) 555-0137', address:'780 Pit Rd', city:'Bastrop, TX', zip:'78602', cert:'', added:dd(-60)},
+    {id:'C6', name:'Kyle Henson', company:'Red River Recycling', email:'', phone:'(940) 555-0110', address:'55 Industrial Blvd', city:'Wichita Falls, TX', zip:'76301', cert:'', added:dd(-120)},
+    {id:'C7', name:'Travis Cole', company:'Lone Star Land Clearing', email:'travis@lslandclearing.com', phone:'(254) 555-0183', address:'', city:'Waco, TX', zip:'76701', cert:'', added:dd(-1)},
+    {id:'C8', name:'Jimmy Reyes', company:'Caprock Caliche Co.', email:'', phone:'(806) 555-0125', address:'CR 7300', city:'Lubbock, TX', zip:'79401', cert:'', added:dd(-11)},
+    {id:'C9', name:'Hank Morrow', company:'Texas Crushed Stone Partners', email:'hank@txcrushedstone.com', phone:'(512) 555-0191', address:'5300 S IH-35', city:'Georgetown, TX', zip:'78626', cert:'', added:dd(-520)}
+  ];
+  const stock = [
+    {id:'S101', cond:'New',  type:'Crushers', brand:'McCloskey', model:'J4', desc:'Tracked jaw crusher · 44" × 28" jaw · CAT C9.3B 300 hp', serial:'MC-J4-25-0412', year:2025, hours:12, yard:'La Grange, TX', price:785000, rent:58000, age:34, status:'Available'},
+    {id:'S102', cond:'New',  type:'Crushers', brand:'McCloskey', model:'I4C', desc:'Tracked impact crusher · closed circuit with recirculating screen', serial:'MC-I4C-25-0188', year:2025, hours:8, yard:'Fort Worth, TX', price:835000, rent:61000, age:96, status:'Available'},
+    {id:'S103', cond:'New',  type:'Crushers', brand:'Lippmann', model:'1200JE', desc:'Electric-drive jaw crusher · 42" × 30" jaw', serial:'LM-1200-24-0077', year:2024, hours:0, yard:'La Grange, TX', price:912000, rent:null, age:251, status:'Available'},
+    {id:'S104', cond:'Used', type:'Screeners', brand:'McCloskey', model:'S190', desc:'Double deck screener · 20′ × 5′ box · 1,840 hrs', serial:'MC-S190-22-1931', year:2022, hours:1840, yard:'La Grange, TX', price:389000, rent:26500, age:58, status:'Available'},
+    {id:'S105', cond:'Used', type:'Screeners', brand:'McCloskey', model:'S130 2DT', desc:'Two-deck screener · 3,960 hrs', serial:'MC-S130-18-0742', year:2018, hours:3960, yard:'Odessa, TX', price:128000, rent:14500, age:402, status:'Available'},
+    {id:'S106', cond:'Used', type:'Screeners', brand:'Lippmann', model:'LS622', desc:'Tracked 6′ × 22′ triple shaft screener · 2,210 hrs', serial:'LM-LS622-21-0315', year:2021, hours:2210, yard:'Fort Worth, TX', price:297000, rent:21000, age:141, status:'Sold', hold:'Hill Country Rock & Sand'},
+    {id:'S107', cond:'New',  type:'Conveyors & Stackers', brand:'Superior', model:'36X100 PRSC', desc:'Portable radial stacking conveyor · 36" × 100′', serial:'SI-PRSC-25-2240', year:2025, hours:0, yard:'Odessa, TX', price:214000, rent:9800, age:21, status:'Available'},
+    {id:'S108', cond:'Used', type:'Conveyors & Stackers', brand:'McCloskey', model:'ST100TLA', desc:'Tracked stacker · 100′ · 2,700 hrs', serial:'MC-ST100-21-0551', year:2021, hours:2700, yard:'La Grange, TX', price:118000, rent:11500, age:203, status:'Allocated', hold:'Brazos Valley Aggregates · 14 days'},
+    {id:'S109', cond:'New',  type:'Washers', brand:'MWS', model:'Sand Screw 4432', desc:'Fine material washer · 44" single screw × 32′', serial:'MWS-4432-25-0034', year:2025, hours:0, yard:'La Grange, TX', price:168500, rent:null, age:77, status:'Sold', hold:'Colorado River Sand & Gravel'},
+    {id:'S110', cond:'New',  type:'Washers', brand:'MWS', model:'620 SandStorm', desc:'Portable sand classifying & dewatering plant', serial:'MWS-620-24-0011', year:2024, hours:0, yard:'La Grange, TX', price:398000, rent:null, age:310, status:'Sold', hold:'Colorado River Sand & Gravel'},
+    {id:'S111', cond:'New',  type:'Feeders', brand:'Superior', model:'PFH15 Feed Hopper', desc:'Portable feed hopper · 15 yd³', serial:'SI-PFH15-25-0190', year:2025, hours:0, yard:'Fort Worth, TX', price:96500, rent:5200, age:44, status:'Available'},
+    {id:'S112', cond:'New',  type:'Plants', brand:'Superior', model:'Sentry 4250 HSI Plant', desc:'Portable closed-circuit horizontal shaft impact plant', serial:'SI-S4250-25-0006', year:2025, hours:0, yard:'Fort Worth, TX', price:1240000, rent:null, age:63, status:'Available'},
+    {id:'S113', cond:'Used', type:'Organics', brand:'Doppstadt', model:'SM720.2 SA', desc:'Trommel screen · 3,120 hrs', serial:'DS-SM720-22-0398', year:2022, hours:3120, yard:'Lakeland, FL', price:415000, rent:24000, age:118, status:'On rent', hold:'Gulf Coast Organics'},
+    {id:'S114', cond:'New',  type:'Organics', brand:'McCloskey Environmental', model:'733RE', desc:'Tracked trommel screener · 7′ drum', serial:'ME-733RE-25-0104', year:2025, hours:4, yard:'Lakeland, FL', price:495000, rent:28000, age:29, status:'Available'},
+    {id:'S115', cond:'Used', type:'Organics', brand:'Backhus', model:'A60', desc:'Windrow compost turner · 6,450 hrs', serial:'BH-A60-17-0219', year:2017, hours:6450, yard:'Lakeland, FL', price:165000, rent:12500, age:233, status:'Available'},
+    {id:'S116', cond:'Used', type:'Organics', brand:'Doppstadt', model:'Inventhor 6', desc:'Universal shredder / grinder · 2,980 hrs', serial:'DS-INV6-22-0061', year:2022, hours:2980, yard:'Lakeland, FL', price:520000, rent:30000, age:388, status:'Available'}
+  ];
+  const it = (id, extra={}) => { const s = stock.find(x=>x.id===id); return {custom:false, product:s.brand+'|'+s.model, stockId:id, brand:s.brand, model:s.model, desc:s.desc, serial:s.serial, price:s.price, qty:1, months:1, ...extra}; };
+  const cust = id => { const c = customers.find(x=>x.id===id); return {customerId:id, contact:c.name, company:c.company, phone:c.phone, email:c.email, location:c.city}; };
+  const quotes = [
+    {id:'Q-2418', type:'sale', ...cust('C1'), rep:'Ryan Kays', date:dd(-2), validUntil:dd(28), status:'Sent', leadId:'L1',
+      items:[it('S101'), it('S108')], extras:[{desc:'Spare jaw die set (fixed + swing)', price:'14200', qty:1}], tradeIn:{on:true, make:'Telsmith', model:'3244 Jaw', year:'2012', hours:'11,800', value:'95000'}, freight:'7400', taxExempt:false, taxRate:'8.25', notes:DEFAULT_TERMS},
+    {id:'Q-2417', type:'sale', ...cust('C2'), rep:'Ryan Kays', date:dd(-4), validUntil:dd(26), status:'Draft',
+      items:[it('S107',{qty:2})], extras:[], tradeIn:{on:false}, freight:'0', taxExempt:true, taxRate:'8.25', notes:DEFAULT_TERMS},
+    {id:'Q-2414', type:'rental', ...cust('C3'), rep:'Tom Bond', date:dd(-9), validUntil:dd(21), status:'Converted', soId:'SO-1190',
+      items:[it('S113',{price:24000, months:3})], extras:[], tradeIn:{on:false}, freight:'4200', taxExempt:false, taxRate:'7.00', notes:RENTAL_TERMS},
+    {id:'Q-2411', type:'sale', ...cust('C4'), rep:'Ryan Kays', date:dd(-12), validUntil:dd(18), status:'Converted', soId:'SO-1191',
+      items:[it('S106')], extras:[{desc:'Hardox wear liner kit', price:'6800', qty:1}], tradeIn:{on:true, make:'McCloskey', model:'S130', year:'2014', hours:'7,900', value:'42000'}, freight:'3600', taxExempt:false, taxRate:'8.25', notes:DEFAULT_TERMS},
+    {id:'Q-2409', type:'sale', ...cust('C5'), rep:'Ryan Kays', date:dd(-15), validUntil:dd(15), status:'Converted', soId:'SO-1192', leadId:'L2',
+      items:[it('S109'), it('S110')], extras:[], tradeIn:{on:false}, freight:'9800', taxExempt:false, taxRate:'8.25', notes:DEFAULT_TERMS},
+    {id:'Q-2402', type:'sale', ...cust('C6'), rep:'Angie Hogan', date:dd(-41), validUntil:dd(-11), status:'Expired',
+      items:[it('S105')], extras:[], tradeIn:{on:false}, freight:'2900', taxExempt:false, taxRate:'8.25', notes:DEFAULT_TERMS}
+  ];
+  const leads = [
+    {id:'L1', customerId:'C1', company:'Brazos Valley Aggregates', contact:'Dale Whitaker', phone:'(979) 555-0148', interest:'McCloskey J4', rep:'Ryan Kays', status:'In Progress', priority:4, followUp:dd(0), show:false, added:dd(-20),
+      notes:[{d:dd(-2), by:'Ryan Kays', t:'Quote Q-2418 sent. Dale wants it in front of the owners at Thursday meeting.'},{d:dd(-20), by:'Ryan Kays', t:'Jaw on the Telsmith is worn out — looking to replace before spring. Wants a tracked unit to move between two pits.'}]},
+    {id:'L2', customerId:'C5', company:'Colorado River Sand & Gravel', contact:'Wes Pruitt', phone:'(512) 555-0137', interest:'MWS 620 SandStorm', rep:'Ryan Kays', status:'In Progress', priority:3, followUp:dd(-1), show:false, added:dd(-38),
+      notes:[{d:dd(-1), by:'Ryan Kays', t:'Sales order drafted — waiting on deposit before sending to the office.'},{d:dd(-15), by:'Ryan Kays', t:'Quoted MWS 4432 and 620 SandStorm. Needs to spec concrete sand to TxDOT Item 421.'}]},
+    {id:'L3', customerId:'C7', company:'Lone Star Land Clearing', contact:'Travis Cole', phone:'(254) 555-0183', interest:'Doppstadt Inventhor 6', rep:'Ryan Kays', status:'New', priority:3, followUp:dd(2), show:false, added:dd(-1),
+      notes:[{d:dd(-1), by:'Ryan Kays', t:'Web form: land clearing contract near Waco, needs a grinder for 3–4 months.'}]},
+    {id:'L4', customerId:'C8', company:'Caprock Caliche Co.', contact:'Jimmy Reyes', phone:'(806) 555-0125', interest:'McCloskey I4C', rep:'Ryan Kays', status:'Contacted', priority:2, followUp:dd(9), show:false, added:dd(-11),
+      notes:[{d:dd(-11), by:'Ryan Kays', t:'Called in asking about impact crushers for caliche base. Budget not set.'}]},
+    {id:'L5', customerId:'C6', company:'Red River Recycling', contact:'Kyle Henson', phone:'(940) 555-0110', interest:'McCloskey S130 2DT', rep:'Ryan Kays', status:'Lost Sale', priority:2, followUp:'', show:false, added:dd(-45),
+      notes:[{d:dd(-10), by:'Ryan Kays', t:'Bought a used screener at auction.'}]},
+    {id:'L6', customerId:'', company:'Rio Grande Aggregates', contact:'Elena Garza', phone:'(956) 555-0133', interest:'McCloskey S190', rep:'Ryan Kays', status:'New', priority:3, followUp:dd(4), show:true, showName:SHOWS[0], added:dd(-6),
+      notes:[{d:dd(-6), by:'Ryan Kays', t:'Stopped at the stand. Running an old 3-deck screener in Laredo, wants a demo on the S190.'}]},
+    {id:'L7', customerId:'', company:'Panhandle Paving', contact:'Cody Briggs', phone:'(806) 555-0177', interest:'Superior Sentry 4250 HSI Plant', rep:'Ryan Kays', status:'Contacted', priority:2, followUp:dd(12), show:true, showName:SHOWS[0], added:dd(-6),
+      notes:[{d:dd(-6), by:'Ryan Kays', t:'Looking at RAP and base production for 2027 season.'}]}
+  ];
+  const visits = [
+    {id:'V1', company:'Caprock Caliche Co.', date:dd(-3), rep:'Ryan Kays', notes:'Walked the pit with Jimmy. Caliche is soft enough for impact — looked at feed size and where a stacker would sit.', revisit:dd(9)},
+    {id:'V2', company:'Brazos Valley Aggregates', date:dd(-20), rep:'Ryan Kays', notes:'Inspected the Telsmith 3244 for trade. Jaw dies and bearings due. Took photos for trade-in value.', revisit:dd(1)},
+    {id:'V3', company:'Hill Country Rock & Sand', date:dd(-14), rep:'Ryan Kays', notes:'Demo of LS622 on the Fort Worth yard. Bo happy with deck access.', revisit:null}
+  ];
+  const orders = [
+    {id:'SO-1192', quoteId:'Q-2409', company:'Colorado River Sand & Gravel', date:dd(-1), rep:'Ryan Kays', delivery:dd(30), site:'Bastrop, TX', warranty:'Manufacturer — 12 months / 2,000 hrs', deposit:'60100', depositIn:false, pdi:true, status:'Draft'},
+    {id:'SO-1191', quoteId:'Q-2411', company:'Hill Country Rock & Sand', date:dd(-6), rep:'Ryan Kays', delivery:dd(5), site:'Marble Falls, TX', warranty:'Used — 90 day powertrain', deposit:'29700', depositIn:true, pdi:true, status:'Sent'},
+    {id:'SO-1190', quoteId:'Q-2414', company:'Gulf Coast Organics', date:dd(-8), rep:'Tom Bond', delivery:dd(-5), site:'Bartow, FL', warranty:'Rental service agreement', deposit:'28200', depositIn:true, pdi:true, status:'Completed'},
+    {id:'SO-1186', quoteId:null, company:'Texas Crushed Stone Partners', equipment:'McCloskey J6', total:948000, date:dd(-30), rep:'Ryan Kays', delivery:dd(-12), site:'Georgetown, TX', warranty:'Manufacturer — 12 months / 2,000 hrs', deposit:'94800', depositIn:true, pdi:true, status:'Completed'}
+  ];
+  const requests = [
+    {id:'RQ3', customerId:'C4', company:'Hill Country Rock & Sand', contact:'Bo Kessler', wanted:'Used cone crusher, 250–300 tph, tracked', cond:'Used', budget:'400000', needBy:dd(45), status:'Sourcing', rep:'Ryan Kays', date:dd(-5), notes:'Would take a Telsmith or Lippmann. Checking with the manufacturers on trade-ins coming back.'},
+    {id:'RQ2', customerId:'C5', company:'Colorado River Sand & Gravel', contact:'Wes Pruitt', wanted:'Log washer for clay-bound gravel', cond:'New', budget:'', needBy:dd(90), status:'Open', rep:'Ryan Kays', date:dd(-9), notes:'Superior log washer — needs spec on feed.'},
+    {id:'RQ1', customerId:'C3', company:'Gulf Coast Organics', contact:'Marie Dupree', wanted:'Tracked shredder for storm debris, 2–3 months', cond:'Rental', budget:'30000', needBy:dd(-2), status:'Found', rep:'Tom Bond', date:dd(-20), notes:'Inventhor 6 at Lakeland matches.', match:'S116'}
+  ];
+  const svc = [
+    {id:'R1', kind:'Service', company:'Brazos Valley Aggregates', machine:'Telsmith 3244 Jaw', text:'Hydraulic leak on toggle tension cylinder.', urgent:true, date:dd(-1), status:'Tech assigned'},
+    {id:'R2', kind:'Parts', company:'Permian Basin Materials', machine:'McCloskey ST80T', text:'Belt splice kit + 2 return idlers.', urgent:false, date:dd(-3), status:'Shipped'}
+  ];
+  return {me:'Ryan Kays', customers, stock, quotes, leads, visits, orders, requests, svc, nextQ:2419, nextSO:1193, nextL:8, nextV:4, nextR:3, nextC:10, nextRQ:4};
+}
+let DB = seed();
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Helpers
+   ═══════════════════════════════════════════════════════════════════════════ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const n = v => { const x = parseFloat(String(v ?? '').replace(/[^0-9.\-]/g,'')); return isFinite(x) ? x : 0; };
+const money = (v, cents) => '$' + Number(v).toLocaleString('en-US', {minimumFractionDigits:cents?2:0, maximumFractionDigits:cents?2:0});
+const fdate = s => { if(!s) return '—'; const x = new Date(s+'T00:00'); return x.toLocaleDateString('en-US', {month:'short', day:'numeric', year: x.getFullYear()===TODAY.getFullYear() ? undefined : 'numeric'}); };
+const fnum = s => s ? new Date(s+'T00:00').toLocaleDateString('en-US', {month:'2-digit', day:'2-digit', year:'numeric'}) : '—';
+const rel = s => { const k = daysFrom(s); return k===0 ? 'Today' : k===1 ? 'Tomorrow' : k===-1 ? 'Yesterday' : k<0 ? `${-k} days overdue` : `in ${k} days`; };
+const clone = o => JSON.parse(JSON.stringify(o));
+const getPath = (o,p) => p.split('.').reduce((a,k)=>a?.[k], o);
+const setPath = (o,p,v) => { const ks = p.split('.'); let a = o; ks.slice(0,-1).forEach(k=>{ a = a[k] ??= {}; }); a[ks.at(-1)] = v; };
+const me = () => DB.me;
+const first = s => s.split(' ')[0];
+const num = id => id.replace(/^\D+-?/,'');
+const pj = o => esc(JSON.stringify(o));   // JSON for a data-p attribute
+
+const P = {
+  home:'M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10', plus:'M12 5v14M5 12h14',
+  doc:'M7 3h7l5 5v13H7zM14 3v5h5M9.5 13h5M9.5 17h5', box:'M3 7l9-4 9 4v10l-9 4-9-4zM3 7l9 4 9-4M12 11v10',
+  users:'M15 19v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1M8.5 10.5a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4M21 19v-1a4 4 0 00-3-3.9M15 4.2a3.2 3.2 0 010 6.2',
+  pin:'M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11zM12 12a2 2 0 100-4 2 2 0 000 4',
+  cart:'M3 4h2l2.5 11h11L21 7H6.5M9 20a1 1 0 100-2 1 1 0 000 2M18 20a1 1 0 100-2 1 1 0 000 2',
+  wrench:'M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z',
+  clip:'M9 3h6v3H9zM7 4.5H5V21h14V4.5h-2M8.5 11h7M8.5 15h7',
+  search:'M11 18a7 7 0 100-14 7 7 0 000 14zM21 21l-5-5', back:'M19 12H5M11 18l-6-6 6-6', chev:'M9 18l6-6-6-6',
+  truck:'M2 6h12v10H2zM14 9h4l3 3v4h-7M6.5 19.5a2 2 0 100-4 2 2 0 000 4M17 19.5a2 2 0 100-4 2 2 0 000 4',
+  bell:'M18 16H6l1.5-2v-4a4.5 4.5 0 019 0v4zM10 19a2 2 0 004 0', edit:'M4 20h4L19 9l-4-4L4 16zM13 7l4 4',
+  copy:'M9 9h11v11H9zM5 15H4V4h11v1', download:'M12 4v11M7 10l5 5 5-5M5 20h14', x:'M6 6l12 12M18 6L6 18',
+  check:'M5 12l5 5 9-10', cal:'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4', send:'M21 3L10 14M21 3l-7 18-4-7-7-4z',
+  star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z', tag:'M3 12V4h8l10 10-8 8zM7.5 8h.01',
+  info:'M12 21a9 9 0 100-18 9 9 0 000 18zM12 11v5M12 8h.01', save:'M5 3h11l3 3v15H5zM8 3v5h7V3M8 21v-7h8v7',
+  user:'M20 21v-1a5 5 0 00-5-5H9a5 5 0 00-5 5v1M12 11a4 4 0 100-8 4 4 0 000 8',
+  refresh:'M4 4v6h6M20 20v-6h-6M5.5 15a7 7 0 0012 2.5M18.5 9A7 7 0 006.5 6.5', logout:'M14 4h5v16h-5M10 16l-4-4 4-4M6 12h10',
+  alert:'M12 3l10 18H2zM12 10v5M12 18h.01', crusher:'M3 18h18M5 18V9l5-4h6l3 4v9M9 18v-5h6v5M3 9h4',
+  sun:'M12 16a4 4 0 100-8 4 4 0 000 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
+  arrow:'M5 12h14M13 6l6 6-6 6'
+};
+const ic = (k, cls='') => `<svg class="i ${cls}" viewBox="0 0 24 24"><path d="${P[k]}"/></svg>`;
+const STATUS_PILL = {Draft:'', Sent:'blue', Converted:'dark', Expired:'red', Completed:'green',
+  New:'green', Contacted:'blue', 'In Progress':'amber', 'On Hold':'', 'Closed/Won':'dark', 'Lost Sale':'red',
+  Available:'green', Allocated:'amber', 'On rent':'blue', Sold:'dark',
+  Open:'yel', Sourcing:'amber', Found:'green', Closed:''};
+const pill = s => `<span class="pill ${STATUS_PILL[s] ?? ''}">${esc(s)}</span>`;
+const rate = k => `<span class="rate">${[1,2,3,4].map(i=>`<svg class="i ${i>k?'off':''}" viewBox="0 0 24 24"><path d="${P.star}"/></svg>`).join('')}</span>`;
+const ageCls = d => d < 183 ? 'a1' : d < 365 ? 'a2' : 'a3';
+const ageTxt = d => { const m = Math.max(1, Math.round(d/30.4)); return `${m} month${m===1?'':'s'}`; };
+
+const quoteById = id => DB.quotes.find(q=>q.id===id);
+const leadById = id => DB.leads.find(l=>l.id===id);
+const stockById = id => DB.stock.find(s=>s.id===id);
+const orderById = id => DB.orders.find(o=>o.id===id);
+const custById = id => DB.customers.find(c=>c.id===id);
+const reqById = id => DB.requests.find(r=>r.id===id);
+const products = () => { const seen = new Set(CATALOGUE.map(p=>p.key)); return [...CATALOGUE, ...DB.stock.filter(s=>!seen.has(s.brand+'|'+s.model)).map(s=>({key:s.brand+'|'+s.model, brand:s.brand, model:s.model, type:s.type, desc:s.desc, price:s.price, rent:s.rent}))]; };
+const productBy = key => products().find(p=>p.key===key);
+const productOptions = (sel, ph='Select product') => `<option value="">${ph}</option>` + TYPES.map(t => {
+  const ps = products().filter(p=>p.type===t); if(!ps.length) return '';
+  return `<optgroup label="${t}">${ps.map(p=>`<option value="${esc(p.key)}" ${p.key===sel?'selected':''}>${esc(p.brand)} ${esc(p.model)}</option>`).join('')}</optgroup>`;
+}).join('');
+const customerOptions = sel => `<option value="">Select customer</option>` + DB.customers.slice().sort((a,b)=>a.company<b.company?-1:1).map(c=>`<option value="${c.id}" ${c.id===sel?'selected':''}>${esc(c.name)} — ${esc(c.company)}</option>`).join('');
+
+/* Totals. Trade-in comes off the taxable amount (as Texas allows); freight is
+   shown separately and not taxed. Rental lines are monthly rate × months. */
+function calc(q){
+  const rental = q.type === 'rental';
+  const equip = q.items.reduce((s,i) => s + n(i.price) * (n(i.qty)||1) * (rental ? Math.max(1, n(i.months)||1) : 1), 0);
+  const parts = (q.extras||[]).reduce((s,x) => s + n(x.price) * (n(x.qty)||1), 0);
+  const sub = equip + parts;
+  const trade = !rental && q.tradeIn?.on ? n(q.tradeIn.value) : 0;
+  const base = Math.max(0, sub - trade);
+  const tax = q.taxExempt ? 0 : Math.round(base * n(q.taxRate)) / 100;
+  const freight = n(q.freight);
+  const total = sub - trade + freight + tax;
+  const deposit = rental ? (q.items.reduce((s,i)=>s + n(i.price)*(n(i.qty)||1),0) + parts + freight) : Math.round(total * 0.10);
+  return {equip, parts, sub, trade, tax, freight, total, deposit, rental};
+}
+const itemLine = q => q.items.length ? `${q.items[0].model || 'Item'}${q.items.length>1 ? ` + ${q.items.length-1}` : ''}` : 'No items';
+const itemLong = q => q.items.length ? `${q.items[0].brand} ${q.items[0].model}${q.items.length>1 ? ` + ${q.items.length-1} more` : ''}` : 'No items yet';
+const orderEquip = o => o.quoteId ? itemLong(quoteById(o.quoteId)) : o.equipment;
+const orderTotal = o => o.quoteId ? calc(quoteById(o.quoteId)).total : o.total;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Navigation — a stack. Each entry carries its own form draft (d), so going
+   to "+ Customer" from a quote and back keeps what was typed on the quote.
+   ═══════════════════════════════════════════════════════════════════════════ */
+let STACK = [{n:'home', p:{}}];
+const UI = {qSearch:'', sBrand:'All', sCond:'All', sSearch:'', lSearch:'', lStatus:'All', cSearch:''};
+const here = () => STACK.at(-1);
+const D = () => here().d;
+function go(name, p={}, opt={}){ if(opt.replace) STACK.pop(); STACK.push({n:name, p, d:opt.d}); closeLayer(); render(); }
+function back(){ if(STACK.length>1) STACK.pop(); closeLayer(); render(); }
+function jump(name, p={}){ STACK = [{n:'home', p:{}}]; if(name!=='home') STACK.push({n:name, p}); closeLayer(); render(); }
+
+/* Header: light (white, as the wireframes) by default; dark for Account and Add Customer. */
+function hdr(title, o={}){
+  return {light:!o.dark, html:`${o.noBack?'':`<button class="back" data-act="back" aria-label="Back">${ic('back')}</button>`}
+    <div class="ttl"><b>${esc(title)}</b>${o.sub ? `<small>${esc(o.sub)}</small>` : ''}</div>${o.right||''}
+    ${o.noHome?'':`<button class="ic" data-act="home" aria-label="Home">${ic('home')}</button>`}`};
+}
+
+function render(opt={}){
+  const r = here(); const S = SCREENS[r.n];
+  const body = $('#body'); const keep = opt.keep ? body.scrollTop : 0;
+  const out = S(r.p);
+  const h = $('#hdr');
+  const light = !out.homeHdr && out.header.light;
+  h.className = 'hdr' + (out.homeHdr ? ' home' : light ? ' light' : '');
+  h.innerHTML = out.homeHdr || out.header.html;
+  $('#screen').dataset.hdr = light ? 'light' : 'dark';
+  body.innerHTML = out.body;
+  $('#foot').innerHTML = out.footer || '';
+  $('#tabs').style.display = out.tabs ? '' : 'none';
+  $('#tabs').innerHTML = `<button class="tab ${out.tabs==='home'?'on':''}" data-act="home">${ic('home')}Home</button>
+    <button class="tab plus" data-act="create" aria-label="Create new">${ic('plus')}</button>
+    <button class="tab ${out.tabs==='account'?'on':''}" data-act="account">${ic('user')}Account</button>`;
+  body.scrollTop = keep;
+  renderRail(); renderNotes(r.n);
+  out.after?.();
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Screens
+   ═══════════════════════════════════════════════════════════════════════════ */
+const SCREENS = {};
+
+/* ── Home ── */
+SCREENS.home = () => {
+  const open = DB.quotes.filter(q => q.rep===me() && (q.status==='Draft' || q.status==='Sent')).length;
+  const due = DB.leads.filter(l => l.rep===me() && l.followUp && daysFrom(l.followUp)<=0 && !['Closed/Won','Lost Sale'].includes(l.status)).length;
+  const revisit = DB.visits.filter(v => v.rep===me() && v.revisit && daysFrom(v.revisit)<=2).length;
+  const reqOpen = DB.requests.filter(r => r.status==='Open' || r.status==='Sourcing').length;
+  const hr = new Date().getHours(); const greet = hr<12 ? 'Good Morning' : hr<17 ? 'Good Afternoon' : 'Good Evening';
+  const tiles = [
+    ['quotes','Quotes','View & create','doc','', open ? `<span class="pill blue cnt">${open} open</span>` : ''],
+    ['stock','Stock','Browse inventory','box','', ''],
+    ['leads','Sales Leads','Follow-ups & notes','users','', due ? `<span class="pill red cnt">${due} due</span>` : ''],
+    ['visits','Site Visits','Pits, quarries & yards','pin','', revisit ? `<span class="pill amber cnt">${revisit} revisit</span>` : ''],
+    ['service','Parts & Services','Request forms','wrench','y', ''],
+    ['requests','Requested Equipment','Customer requests','clip','d', reqOpen ? `<span class="pill yel cnt">${reqOpen} open</span>` : '']
+  ];
+  const alerts = due + revisit;
+  return {
+    tabs:'home',
+    homeHdr:`<div class="hrow"><img src="${LOGO}" alt="McCourt Equipment"><span class="sp"></span>
+        <button class="ic" style="color:#fff" data-act="toast" data-v="${alerts} follow-up${alerts===1?'':'s'} due — see Sales Leads and Site Visits" aria-label="Notifications">${ic('bell')}${alerts?'<span class="dot"></span>':''}</button></div>
+      <div class="hrow" style="align-items:flex-end"><div class="sp"><div class="gm">${greet}</div><div class="gn">${esc(first(me()))}</div></div>
+        <div class="wx">${ic('sun')}72° Sunny<small>La Grange, TX</small></div></div>`,
+    body:`<div class="tiles">${tiles.map(([k,t,s,i,tone,c]) => `<button class="tile" data-go="${k}"><span class="ti ${tone}">${ic(i)}</span>${c}<div><b>${t}</b><small>${s}</small></div></button>`).join('')}</div>`
+  };
+};
+
+/* ── Create menu ── */
+function openCreate(){
+  sheet('Create New', `
+    <button class="cbar c1" data-go="quoteform" data-p="${pj({type:'sale'})}">${ic('doc')}<span class="sp">Quote</span></button>
+    <button class="cbar c2" data-act="pickorder">${ic('cart')}<span class="sp">Sales Order</span></button>
+    <button class="cbar c3" data-go="leadform" data-p="${pj({})}">${ic('users')}<span class="sp">Sales Lead</span></button>
+    <button class="cbar c4" data-go="visitform" data-p="${pj({})}">${ic('pin')}<span class="sp">Site Visit</span></button>`, {title:'center'});
+}
+function pickOrder(){
+  const ok = DB.quotes.filter(q => q.status==='Sent' || q.status==='Draft');
+  sheet('Convert which quote?', `<div class="banner b">${ic('info')}<span>Sales orders are raised from a quote, so the items, price and trade-in carry across.</span></div>` +
+    ok.map(q => `<button class="opt" data-act="convert" data-id="${q.id}"><span class="oi">${ic('doc')}</span><span class="sp ell"><b class="ell">${esc(q.company||q.contact)}</b><small class="ell">#${num(q.id)} · ${esc(itemLong(q))} · ${money(calc(q).total)}</small></span>${ic('chev')}</button>`).join(''));
+}
+
+/* ── Quotes list ── */
+function quoteCards(status){
+  const s = UI.qSearch.trim().toLowerCase();
+  const list = DB.quotes.filter(q => (!status || (q.status===status && q.rep===me()))
+    && (!s || [q.company,q.contact,q.rep,q.id,...q.items.map(i=>i.brand+' '+i.model)].join(' ').toLowerCase().includes(s)));
+  if(!list.length) return `<div class="empty">No quotes match.</div>`;
+  return list.map(q => { const c = calc(q); return `
+    <div class="card tap lc" data-go="quote" data-id="${q.id}">
+      <div class="row" style="align-items:flex-start"><span class="nm sp">${esc(q.company||q.contact)}</span><span class="chipdate">${fdate(q.date)}</span></div>
+      <div class="row" style="align-items:flex-end"><div class="sp">
+        <div class="meta ell">${esc(itemLine(q))} • ${money(c.total)} • ${esc(first(q.rep))}</div>
+        <div class="meta">Status : ${pill(q.status)} ${q.type==='rental'?'<span class="pill yel">Rental</span>':''}</div></div>
+        <span class="hash">#${num(q.id)}</span></div>
+      <div class="acts">
+        <button class="btn view" data-go="quote" data-id="${q.id}">View</button>
+        ${q.status==='Converted' ? `<button class="btn dk" data-act="dup" data-id="${q.id}">Duplicate</button><button class="btn pri wide" data-go="order" data-id="${q.soId}">${q.soId}</button>`
+          : q.status==='Expired' ? `<button class="btn dk" data-act="dup" data-id="${q.id}">Duplicate</button><button class="btn pri wide" data-act="requote" data-id="${q.id}">Re-quote</button>`
+          : `<button class="btn dk" data-go="quoteform" data-p="${pj({id:q.id})}">Edit</button>
+             ${q.status==='Draft' ? `<button class="btn send" data-act="send" data-id="${q.id}">Send</button>` : ''}
+             <button class="btn pri wide" data-act="convert" data-id="${q.id}">Convert</button>`}
+      </div>
+    </div>`; }).join('');
+}
+SCREENS.quotes = ({status}) => ({
+  header: hdr(status ? `${status} Quotes` : 'Quotes'),
+  body:`<div class="search">${ic('search')}<input id="qs" placeholder="Search customer or model…" value="${esc(UI.qSearch)}"></div>
+    ${status ? `<button class="fchip" data-act="clearq">My ${status.toLowerCase()} quotes ${ic('x')}</button>` : ''}
+    <div id="qlist">${quoteCards(status)}</div>`,
+  footer:`<button class="btn pri grow" data-go="quoteform" data-p="${pj({type:'sale'})}">${ic('plus')}Create Quote</button>`,
+  after(){ $('#qs').addEventListener('input', e => { UI.qSearch = e.target.value; $('#qlist').innerHTML = quoteCards(status); }); }
+});
+
+/* ── Quote view ── */
+SCREENS.quote = ({id}) => {
+  const q = quoteById(id); const c = calc(q);
+  const lead = q.leadId && leadById(q.leadId);
+  return {
+    header: hdr(`Quote #${num(q.id)}`, {sub:`${q.type==='rental'?'Rental':'Sale'} · ${q.status}`, right:`<button class="ic" data-go="quotepdf" data-id="${q.id}" aria-label="View PDF">${ic('doc')}</button>`}),
+    body:`
+      ${q.status==='Converted' ? `<div class="banner">${ic('check')}<span class="sp">Converted to sales order <b>${q.soId}</b></span><button class="btn sm view" data-go="order" data-id="${q.soId}">Open</button></div>` : ''}
+      ${q.status==='Draft' ? `<div class="banner y">${ic('info')}<span>Draft — not sent to the customer yet.</span></div>` : ''}
+      ${q.status==='Expired' ? `<div class="banner y">${ic('alert')}<span>Expired ${fdate(q.validUntil)}. Re-quote to refresh pricing and stock.</span></div>` : ''}
+      <div class="card">
+        <div class="row"><span class="brand">Customer</span><span class="sp"></span>${pill(q.status)}</div>
+        <div class="b" style="font-size:18px;margin-top:4px">${esc(q.contact||'—')}</div>
+        <div class="sm mut">${esc(q.company||'')}${q.phone?` · ${esc(q.phone)}`:''}</div>
+        <div class="sm mut">${ic('truck','xs')} Deliver to ${esc(q.location||'—')}</div>
+        ${lead ? `<button class="btn sm view" style="margin-top:10px" data-go="lead" data-id="${lead.id}">${ic('users')}Lead · ${esc(lead.status)}</button>` : ''}
+      </div>
+      <div class="sec">Items · ${q.items.length}</div>
+      ${q.items.map(i => `<div class="card">
+        <div class="brand">${esc(i.brand)}</div>
+        <div class="row"><b style="font-size:16px" class="sp">${esc(i.model)}</b><b class="num">${money(n(i.price)*(n(i.qty)||1)*(c.rental?Math.max(1,n(i.months)):1))}</b></div>
+        <div class="sm mut">${esc(i.desc)}</div>
+        <div class="xs mut" style="margin-top:6px">${i.serial?`S/N ${esc(i.serial)} · `:''}${c.rental ? `${money(n(i.price))}/mo × ${Math.max(1,n(i.months))} mo` : `Qty ${n(i.qty)||1} × ${money(n(i.price))}`}${i.stockId?' · from stock':i.custom?' · custom product':''}</div>
+      </div>`).join('')}
+      ${(q.extras||[]).length ? `<div class="sec">Custom items / parts</div><div class="card">${q.extras.map(x=>`<div class="kv"><span>${esc(x.desc)}${n(x.qty)>1?` × ${n(x.qty)}`:''}</span><span class="num">${money(n(x.price)*(n(x.qty)||1))}</span></div>`).join('')}</div>` : ''}
+      ${q.tradeIn?.on ? `<div class="sec">Trade-in</div><div class="card">
+        <div class="kv"><span>Machine</span><span>${esc(q.tradeIn.year)} ${esc(q.tradeIn.make)} ${esc(q.tradeIn.model)}</span></div>
+        <div class="kv"><span>Hours</span><span>${esc(q.tradeIn.hours||'—')}</span></div>
+        <div class="kv"><span>Allowance</span><span class="num">${money(n(q.tradeIn.value))}</span></div></div>` : ''}
+      <div class="sec">Price summary</div>
+      ${totalsHTML(q)}
+      <div class="sec">Terms & notes</div>
+      <div class="card sm" style="color:var(--ink-2)">${esc(q.notes||'—')}</div>
+      <div class="xs mut" style="text-align:center;margin-top:4px">Prepared by ${esc(q.rep)} · ${fdate(q.date)} · valid to ${fdate(q.validUntil)}</div>`,
+    footer: q.status==='Converted' ? `<button class="btn view grow" data-go="quotepdf" data-id="${q.id}">${ic('doc')}PDF</button><button class="btn dk grow" data-act="dup" data-id="${q.id}">${ic('copy')}Duplicate</button>`
+      : q.status==='Expired' ? `<button class="btn view grow" data-go="quotepdf" data-id="${q.id}">${ic('doc')}PDF</button><button class="btn pri grow" data-act="requote" data-id="${q.id}">${ic('refresh')}Re-quote</button>`
+      : `<button class="btn dk" data-go="quoteform" data-p="${pj({id:q.id})}" aria-label="Edit">${ic('edit')}</button><button class="btn view" data-act="dup" data-id="${q.id}" aria-label="Duplicate">${ic('copy')}</button>
+         ${q.status==='Draft' ? `<button class="btn send grow" data-act="send" data-id="${q.id}">${ic('send')}Send</button>` : ''}
+         <button class="btn pri grow" data-act="convert" data-id="${q.id}">${ic('cart')}Convert</button>`
+  };
+};
+function totalsHTML(q){
+  const c = calc(q);
+  return `<div class="card tot dark" id="totals">
+    <div class="l"><span>${c.rental?'Rental subtotal':'Equipment'}</span><span class="num">${money(c.equip)}</span></div>
+    ${c.parts ? `<div class="l"><span>Custom items / parts</span><span class="num">${money(c.parts)}</span></div>` : ''}
+    ${c.trade ? `<div class="l neg"><span>Less trade-in</span><span class="num">– ${money(c.trade)}</span></div>` : ''}
+    <div class="l"><span>${q.taxExempt ? 'Sales tax — exempt' : `Sales tax ${n(q.taxRate)}%${c.trade?' on net':''}`}</span><span class="num">${q.taxExempt?'$0':money(c.tax,true)}</span></div>
+    <div class="l"><span>Freight & delivery</span><span class="num">${c.freight?money(c.freight):'FOB yard'}</span></div>
+    <div class="l grand"><span>Total (USD)</span><span class="num">${money(c.total,true)}</span></div>
+    <div class="l dep"><span>${c.rental?'Due before dispatch (1st month + freight)':'Deposit on order (10%)'}</span><span class="num">${money(c.deposit)}</span></div>
+  </div>`;
+}
+
+/* ── Quote PDF ── */
+SCREENS.quotepdf = ({id}) => {
+  const q = quoteById(id); const c = calc(q);
+  const line = (d, qty, amt) => `<tr><td>${d}</td><td class="r">${qty}</td><td class="r">${amt}</td></tr>`;
+  return {
+    header: hdr(`Quote #${num(q.id)}.pdf`, {sub:q.company||q.contact}),
+    body:`<div class="doc">
+      <div class="dh"><img src="${LOGO}" alt="McCourt Equipment"><div class="q"><b>${q.type==='rental'?'RENTAL QUOTE':'QUOTATION'}</b><span>No. ${num(q.id)}</span></div></div>
+      <div class="dp">
+        <div class="dg">
+          <div><h6>Prepared for</h6><b>${esc(q.contact)}</b><br>${esc(q.company||'')}<br>${esc(q.phone||'')}<br>${esc(q.location||'')}</div>
+          <div><h6>Details</h6>Issue date: ${fnum(q.date)}<br>Valid until: ${fnum(q.validUntil)}<br>Sales rep: ${esc(q.rep)}<br>Deliver to: ${esc(q.location||'FOB La Grange')}</div>
+        </div>
+        <table><thead><tr><th>Description</th><th class="r">${c.rental?'Mo':'Qty'}</th><th class="r">Amount</th></tr></thead><tbody>
+          ${q.items.map(i=>line(`<b>${esc(i.brand)} ${esc(i.model)}</b><br><span style="color:#5b6b62">${esc(i.desc)}${i.serial?` · S/N ${esc(i.serial)}`:''}</span>${c.rental?`<br><span style="color:#5b6b62">${money(n(i.price))} per month</span>`:''}`, c.rental?Math.max(1,n(i.months)):n(i.qty)||1, money(n(i.price)*(n(i.qty)||1)*(c.rental?Math.max(1,n(i.months)):1),true))).join('')}
+          ${(q.extras||[]).map(x=>line(esc(x.desc), n(x.qty)||1, money(n(x.price)*(n(x.qty)||1),true))).join('')}
+          ${c.trade?line(`Trade-in allowance — ${esc(q.tradeIn.year)} ${esc(q.tradeIn.make)} ${esc(q.tradeIn.model)}`, 1, '– '+money(c.trade,true)):''}
+          ${c.freight?line(`Freight & delivery to ${esc(q.location)}`, 1, money(c.freight,true)):''}
+        </tbody></table>
+        <div class="dt">
+          <div><span>Subtotal</span><span>${money(c.sub - c.trade + c.freight,true)}</span></div>
+          <div><span>${q.taxExempt?'Sales tax (exemption on file)':`Sales tax ${n(q.taxRate)}%`}</span><span>${money(c.tax,true)}</span></div>
+          <div class="gt"><span>TOTAL (USD)</span><span>${money(c.total,true)}</span></div>
+          <div style="color:#5b6b62"><span>${c.rental?'Due before dispatch':'Deposit to order (10%)'}</span><span>${money(c.deposit,true)}</span></div>
+        </div>
+        <div class="terms"><h6>Terms</h6>${esc(q.notes)}</div>
+        <div class="sig"><div>Accepted by (customer)</div><div>Date</div></div>
+      </div>
+      <div class="df"><b>${COMPANY.name}</b><span>${COMPANY.hq}</span><span>Main ${COMPANY.main}</span><span>Toll-free ${COMPANY.tollfree}</span><span>${COMPANY.web}</span><span>Yards: ${COMPANY.yards.join(' · ')}</span></div>
+    </div>`,
+    footer:`<button class="btn view grow" data-act="toast" data-v="Quote ${num(q.id)}.pdf saved to Files">${ic('download')}Download</button><button class="btn pri grow" data-act="send" data-id="${q.id}">${ic('send')}Email ${esc(first(q.contact||'customer'))}</button>`
+  };
+};
+
+/* ── Quote form (new / edit) ── */
+const blankItem = () => ({custom:false, product:'', stockId:null, brand:'', model:'', desc:'', serial:'', price:'', qty:1, months:1});
+function blankQuote(type){
+  return {id:null, type, customerId:'', contact:'', company:'', phone:'', email:'', location:'', rep:me(), date:dd(0), validUntil:dd(30), status:'Draft',
+    items:[blankItem()], extras:[], tradeIn:{on:false, make:'', model:'', year:'', hours:'', value:''}, freight:'', taxExempt:false, taxRate:'8.25',
+    notes: type==='rental' ? RENTAL_TERMS : DEFAULT_TERMS};
+}
+const stockItem = (s, type) => ({custom:false, product:s.brand+'|'+s.model, stockId:s.id, brand:s.brand, model:s.model, desc:s.desc, serial:s.serial, price: type==='rental' ? (s.rent ?? '') : s.price, qty:1, months:1});
+function applyCustomer(d, c){
+  Object.assign(d, c ? {customerId:c.id, contact:c.name, company:c.company, phone:c.phone, email:c.email, location:c.city} : {customerId:'', contact:'', company:'', phone:'', email:''});
+  if(c) d.taxExempt = !!c.cert;
+}
+
+const F = (label, path, o={}) => {
+  const v = getPath(D(), path) ?? '';
+  const inner = o.area ? `<textarea class="inp" data-f="${path}" ${o.live?'data-live':''} placeholder="${esc(o.ph||'')}" rows="${o.rows||3}">${esc(v)}</textarea>`
+    : o.opts ? `<select class="inp" data-f="${path}">${o.opts.map(x=>`<option ${x==v?'selected':''}>${esc(x)}</option>`).join('')}</select>`
+    : `<input class="inp" data-f="${path}" ${o.live?'data-live':''} value="${esc(v)}" placeholder="${esc(o.ph||'')}" ${o.num?'inputmode="decimal"':''} ${o.type?`type="${o.type}"`:''} ${o.ro?'readonly':''}>`;
+  const wrap = o.pre ? `<div class="pre"><span>${o.pre}</span>${inner}</div>` : o.suf ? `<div class="pre suf"><span>${o.suf}</span>${inner}</div>` : inner;
+  return `<div class="fld">${label?`<label>${label}${o.opt?' <i>optional</i>':''}</label>`:''}${wrap}${o.hint?`<div class="hint">${ic('info')}<span>${o.hint}</span></div>`:''}</div>`;
+};
+const seg = (path, opts) => `<div class="seg">${opts.map(([v,l]) => `<button class="${String(getPath(D(),path))===String(v)?'on':''}" data-act="set" data-f="${path}" data-v="${pj(v)}">${l}</button>`).join('')}</div>`;
+const sw = (path, title, sub) => `<button class="switch ${getPath(D(),path)?'on':''}" data-act="tog" data-f="${path}"><span class="tr"></span><span><b>${title}</b>${sub?`<small>${sub}</small>`:''}</span></button>`;
+
+SCREENS.quoteform = p => {
+  const e = here();
+  if(!e.d){
+    e.d = p.id ? clone(quoteById(p.id)) : blankQuote(p.type||'sale');
+    if(p.stockId){ e.d.items = [stockItem(stockById(p.stockId), e.d.type)]; }
+    if(p.leadId){ const l = leadById(p.leadId); const c = custById(l.customerId);
+      if(c) applyCustomer(e.d, c); else Object.assign(e.d, {contact:l.contact, company:l.company, phone:l.phone});
+      e.d.leadId = l.id; const pr = products().find(x => `${x.brand} ${x.model}`===l.interest);
+      if(pr){ e.d.items = [{...blankItem(), product:pr.key, brand:pr.brand, model:pr.model, desc:pr.desc, price:pr.price}]; } }
+    if(p.customerId) applyCustomer(e.d, custById(p.customerId));
+  }
+  const q = e.d; const rental = q.type==='rental';
+  return {
+    header: hdr(q.id ? `Edit Quote #${num(q.id)}` : 'New Quote', {sub: q.id ? q.company : `${rental?'Rental':'Sale'} · ${q.rep}`}),
+    body:`
+      ${!q.id ? `<div class="fld">${seg('type',[['sale','Sale'],['rental','Rental']])}</div>` : ''}
+      <div class="sh2"><h4>Customer</h4><button class="btn add" data-go="customerform" data-p="${pj({pick:true})}">${ic('plus')}Customer</button></div>
+      <div class="fld"><label>Customer name</label><select class="inp" data-pick="customer">${customerOptions(q.customerId)}</select>
+        ${!q.customerId && q.contact ? `<div class="hint">${ic('info')}<span>Not on file yet: ${esc(q.contact)}. Use + Customer to add them.</span></div>` : ''}</div>
+      ${F('Company name','company',{ph:'Optional'})}
+      ${F('Delivery location','location',{ph:'City, State', hint:'McCourt drivers deliver anywhere in the U.S.'})}
+
+      <div class="sh2"><h4>Item details</h4><button class="btn add" data-act="additem">${ic('plus')}Add item</button></div>
+      ${q.items.map((it,k) => `<div class="item">
+        <div class="ih"><b>Item ${k+1}</b>${it.stockId?`<span class="pill green">Stock · ${esc(it.serial)}</span>`:''}<span class="sp"></span>${q.items.length>1?`<button class="rm" data-act="rmitem" data-v="${k}">${ic('x')}Remove</button>`:''}</div>
+        <div class="g21">
+          <div class="fld" style="margin-bottom:0"><label>Model / headline</label>${it.custom
+            ? `<input class="inp" data-f="items.${k}.model" value="${esc(it.model)}" placeholder="Custom product">`
+            : `<select class="inp" data-pick="product" data-k="${k}">${productOptions(it.product)}</select>`}</div>
+          ${F('Brand',`items.${k}.brand`,{ph:'e.g. McCloskey'})}
+        </div>
+        <button class="btn tiny" data-act="custom" data-v="${k}" style="margin:-4px 0 14px">${it.custom?'Choose from product list':'Enter Custom Product'}</button>
+        ${F('Spec & notes <i style="font-weight:500;color:var(--ink-3)">freehand</i>',`items.${k}.desc`,{area:true, rows:2, ph:'Type freely — spec, warranty, lead times…'})}
+        ${rental ? `<div class="g3">${F('Rate / mo',`items.${k}.price`,{pre:'$', num:true, live:true, ph:'0'})}${F('Months',`items.${k}.months`,{num:true, live:true})}${F('Qty',`items.${k}.qty`,{num:true, live:true})}</div>`
+          : `<div class="g21">${F('Price ($)',`items.${k}.price`,{pre:'$', num:true, live:true, ph:'0'})}${F('Qty',`items.${k}.qty`,{num:true, live:true})}</div>`}
+        ${!it.stockId ? `<button class="btn sm view" data-act="fromstock" data-v="${k}">${ic('box')}Pick a machine from stock instead</button>` : ''}
+      </div>`).join('')}
+      ${rental ? `<div class="hint" style="margin:-4px 2px 6px">${ic('info')}<span>Minimum rental period is one month.</span></div>` : ''}
+
+      <div class="sh2"><h4>Custom items / parts <i>(optional)</i></h4><button class="btn add" data-act="addextra">${ic('plus')}Add</button></div>
+      ${(q.extras||[]).length ? q.extras.map((x,k) => `<div class="item">
+          <div class="ih"><b>Part ${k+1}</b><span class="sp"></span><button class="rm" data-act="rmextra" data-v="${k}">${ic('x')}Remove</button></div>
+          ${F('Description',`extras.${k}.desc`,{ph:'Wear parts, belting, screen media…'})}
+          <div class="g21">${F('Price ($)',`extras.${k}.price`,{pre:'$', num:true, live:true, ph:'0'})}${F('Qty',`extras.${k}.qty`,{num:true, live:true})}</div>
+        </div>`).join('') : `<p class="empty-note">Tap "Add" to include custom items or parts.</p>`}
+
+      ${!rental ? `<div class="sh2"><h4>Trade-in <i>(optional)</i></h4>${q.tradeIn.on ? `<button class="btn sm ghost" data-act="tog" data-f="tradeIn.on">${ic('x')}Remove</button>` : `<button class="btn add" data-act="tog" data-f="tradeIn.on">${ic('plus')}Add</button>`}</div>
+        ${q.tradeIn.on ? `<div class="item"><div class="g2">${F('Make','tradeIn.make',{ph:'Telsmith'})}${F('Model','tradeIn.model',{ph:'3244 Jaw'})}</div>
+          <div class="g2">${F('Year','tradeIn.year',{num:true})}${F('Hours','tradeIn.hours',{num:true})}</div>
+          ${F('Trade-in allowance','tradeIn.value',{pre:'$', num:true, live:true, hint:'Comes off the taxable amount.'})}</div>`
+        : `<p class="empty-note">Tap "Add" to include a trade-in.</p>`}` : ''}
+
+      <div class="sh2"><h4>Freight & sales tax</h4></div>
+      ${F('Freight & delivery','freight',{pre:'$', num:true, live:true, ph:'0 = FOB yard'})}
+      <div class="fld"><div class="lbl">Sales tax</div>${seg('taxExempt',[[false,'Taxable'],[true,'Exempt — cert on file']])}</div>
+      ${q.taxExempt ? '' : F('Tax rate','taxRate',{suf:'%', num:true, live:true, hint:'8.25% Texas default. Change for out-of-state delivery.'})}
+
+      ${F('Quote validity date','validUntil',{type:'date'})}
+      ${totalsHTML(q)}
+      ${F('Terms & notes','notes',{area:true, rows:4})}`,
+    footer:`<button class="btn dk grow" data-act="savequote">${ic('save')}Save Quote</button><button class="btn pri grow" data-act="saveorder2">${ic('cart')}${ic('arrow')}Order</button>`
+  };
+};
+
+/* ── Sales orders ── */
+const OS_PILL = {Draft:'', Sent:'blue', Completed:'green'};
+SCREENS.orders = ({status}) => {
+  const list = DB.orders.filter(o => o.rep===me() && (!status || o.status===status));
+  return {
+    header: hdr(status ? `${status} Sales Orders` : 'Sales Orders'),
+    body: list.map(o => `<div class="card tap lc" data-go="order" data-id="${o.id}">
+        <div class="row" style="align-items:flex-start"><span class="nm sp">${esc(o.company)}</span><span class="chipdate">${fdate(o.date)}</span></div>
+        <div class="row" style="align-items:flex-end"><div class="sp"><div class="meta ell">${esc(orderEquip(o))} • ${money(orderTotal(o))}</div>
+          <div class="meta">Status : <span class="pill ${OS_PILL[o.status]}">${o.status}</span></div>
+          <div class="tag">${ic('truck','xs')} ${o.status==='Completed'?'Delivered':'Deliver'} ${fdate(o.delivery)} · ${esc(o.site)}</div></div><span class="hash">${o.id}</span></div>
+      </div>`).join('') || `<div class="empty">No ${status?status.toLowerCase()+' ':''}sales orders.</div>`,
+    footer:`<button class="btn pri grow" data-act="pickorder">${ic('plus')}Create Sales Order</button>`
+  };
+};
+SCREENS.order = ({id}) => {
+  const o = orderById(id); const q = o.quoteId && quoteById(o.quoteId);
+  return {
+    header: hdr(o.id, {sub:o.company}),
+    body:`${o.status==='Draft' ? `<div class="banner y">${ic('info')}<span>Draft — the office hasn't got this yet.</span></div>` : ''}
+      <div class="card">
+        <div class="row"><span class="brand">Sales order</span><span class="sp"></span><span class="pill ${OS_PILL[o.status]}">${o.status}</span></div>
+        <div class="b" style="font-size:18px;margin-top:4px">${esc(o.company)}</div>
+        <div class="sm mut">${esc(orderEquip(o))}</div>
+        <div class="kv" style="margin-top:8px"><span>Order total</span><span class="num">${money(orderTotal(o),true)}</span></div>
+        <div class="kv"><span>Deposit</span><span class="num">${money(n(o.deposit))} · ${o.depositIn?'received':'not yet received'}</span></div>
+        <div class="kv"><span>PDI</span><span>${o.pdi?'Requested from the shop':'Not requested'}</span></div>
+        <div class="kv"><span>Warranty</span><span>${esc(o.warranty)}</span></div>
+        <div class="kv"><span>Delivery</span><span>${esc(o.site||'Site TBC')} · ${fdate(o.delivery)}</span></div>
+        <div class="kv"><span>Sales rep</span><span>${esc(o.rep)}</span></div>
+        ${q ? `<div class="kv"><span>From quote</span><span><a href="#" data-go="quote" data-id="${q.id}" style="color:var(--g-2)">#${num(q.id)}</a></span></div>` : ''}
+      </div>`,
+    footer: (q ? `<button class="btn view" data-go="quotepdf" data-id="${q.id}" aria-label="Quote PDF">${ic('doc')}</button>` : '')
+      + (o.status==='Draft' ? `<button class="btn pri grow" data-act="ostatus" data-id="${o.id}" data-v="Sent">${ic('send')}Send to office</button>`
+        : o.status==='Sent' ? `<button class="btn dk grow" data-act="ostatus" data-id="${o.id}" data-v="Completed">${ic('check')}Mark completed</button>` : '')
+  };
+};
+SCREENS.orderform = ({quoteId}) => {
+  const q = quoteById(quoteId); const c = calc(q); const e = here();
+  if(!e.d){
+    e.d = {quoteId, delivery:dd(14), site:q.location, warranty: q.type==='rental' ? 'Rental service agreement' : q.items.some(i=>stockById(i.stockId)?.cond==='Used') ? 'Used — 90 day powertrain' : 'Manufacturer — 12 months / 2,000 hrs',
+      deposit:String(c.deposit), depositIn:false, pdi:true, notes:''};
+  }
+  return {
+    header: hdr('New Sales Order', {sub:`From quote #${num(q.id)} · ${q.company||q.contact}`}),
+    body:`<div class="banner">${ic('check')}<span>Customer, items, trade-in and price carry across from quote <b>#${num(q.id)}</b>.</span></div>
+      <div class="card">
+        <div class="b">${esc(q.company||q.contact)}</div>
+        ${q.items.map(i=>`<div class="kv"><span>${esc(i.brand)} ${esc(i.model)}</span><span class="xs">${esc(i.serial||'to order')}</span></div>`).join('')}
+        ${q.tradeIn?.on?`<div class="kv"><span>Trade-in</span><span>${esc(q.tradeIn.make)} ${esc(q.tradeIn.model)} · ${money(n(q.tradeIn.value))}</span></div>`:''}
+        <div class="kv"><span>Order total</span><span class="num">${money(c.total,true)}</span></div>
+      </div>
+      <div class="g2">${F('Delivery date','delivery',{type:'date'})}${F('Delivery site','site')}</div>
+      ${F('Warranty','warranty',{opts:['Manufacturer — 12 months / 2,000 hrs','Extended — 24 months / 4,000 hrs','Used — 90 day powertrain','Used — sold as is','Rental service agreement']})}
+      ${F(q.type==='rental'?'Due before dispatch':'Deposit (10%)','deposit',{pre:'$', num:true})}
+      <div class="card">${sw('depositIn','Deposit received','Tick once funds have cleared')}<div style="height:10px"></div>${sw('pdi','Request PDI from the shop','Pre-delivery inspection before it loads')}</div>
+      ${F('Notes for the office','notes',{area:true, rows:2, opt:true, ph:'Loading, site access, contacts on the day'})}`,
+    footer:`<button class="btn dk grow" data-act="saveorder" data-v="Draft">${ic('save')}Save draft</button><button class="btn pri grow" data-act="saveorder" data-v="Sent">${ic('send')}Send to office</button>`
+  };
+};
+
+/* ── Stock ── */
+function stockCards(){
+  const s = UI.sSearch.trim().toLowerCase();
+  const list = DB.stock.filter(x => (UI.sBrand==='All' || x.brand===UI.sBrand)
+    && (UI.sCond==='All' || (UI.sCond==='Rental fleet' ? x.rent : x.cond===UI.sCond))
+    && (!s || [x.brand,x.model,x.desc,x.type,x.serial,x.yard].join(' ').toLowerCase().includes(s)));
+  if(!list.length) return '<div class="empty">No machines match.</div>';
+  return list.map(x => `
+    <div class="card tap lc stk ${ageCls(x.age)}" data-go="stockitem" data-id="${x.id}">
+      <div class="row" style="align-items:flex-start"><span class="model sp">${esc(x.model)}</span><span class="age">${ageTxt(x.age)}</span></div>
+      <div class="meta">${x.cond} • ${esc(x.type.toUpperCase())} • ${esc(x.brand.toUpperCase())} • ${money(x.price)}</div>
+      <div class="tag">${ic('pin','xs')} ${esc(x.yard)}${x.rent?` · rent ${money(x.rent)}/mo`:''}${x.status!=='Available'?` · ${esc(x.status)}${x.hold?` — ${esc(x.hold)}`:''}`:''}</div>
+      <div class="acts">
+        <button class="btn ${x.status==='Sold'?'off':'pri'}" ${x.status==='Sold'?'disabled':''} data-go="quoteform" data-p="${pj({type:'sale', stockId:x.id})}">${ic('doc')}Quote</button>
+        ${x.status==='Available' ? `<button class="btn dk" data-act="allocate" data-id="${x.id}">${ic('tag')}Allocate</button>`
+          : `<button class="btn off" disabled>${ic('tag')}${x.status}</button>`}
+      </div>
+    </div>`).join('');
+}
+SCREENS.stock = () => ({
+  header: hdr('Stock', {sub:`${DB.stock.length} machines · 4 yards`}),
+  body:`<div class="search">${ic('search')}<input id="ss" placeholder="Search model or description…" value="${esc(UI.sSearch)}"></div>
+    <div class="filter"><select class="inp" id="sb"><option value="All">All brands</option>${[...new Set(DB.stock.map(s=>s.brand))].sort().map(b=>`<option ${UI.sBrand===b?'selected':''}>${esc(b)}</option>`).join('')}</select>
+      <select class="inp" id="sc">${[['All','New & Used'],['New','New'],['Used','Used'],['Rental fleet','Rental fleet']].map(([v,l])=>`<option value="${v}" ${UI.sCond===v?'selected':''}>${l}</option>`).join('')}</select></div>
+    <div class="xs mut" style="margin:6px 2px 12px">Left edge: amber 6–12 months in stock, red over 12.</div>
+    <div id="slist">${stockCards()}</div>`,
+  after(){
+    $('#ss').addEventListener('input', e => { UI.sSearch = e.target.value; $('#slist').innerHTML = stockCards(); });
+    $('#sb').addEventListener('change', e => { UI.sBrand = e.target.value; $('#slist').innerHTML = stockCards(); });
+    $('#sc').addEventListener('change', e => { UI.sCond = e.target.value; $('#slist').innerHTML = stockCards(); });
+  }
+});
+SCREENS.stockitem = ({id}) => {
+  const x = stockById(id);
+  return {
+    header: hdr(`${x.brand} ${x.model}`, {sub:`${x.cond} · ${x.type}`}),
+    body:`<div class="ph">${ic('crusher')}Photo · ${esc(x.brand)} ${esc(x.model)}</div>
+      <div class="card">
+        <div class="row"><span class="brand">${esc(x.brand)}</span><span class="sp"></span>${pill(x.status)}</div>
+        <div class="b" style="font-size:20px">${esc(x.model)}</div>
+        <div class="sm mut">${esc(x.desc)}</div>
+        <div class="row" style="margin-top:10px;align-items:baseline"><span class="num b" style="font-size:22px">${money(x.price)}</span>${x.rent?`<span class="sm mut">or ${money(x.rent)}/mo rental</span>`:''}</div>
+      </div>
+      ${x.hold ? `<div class="banner y">${ic('tag')}<span>${x.status==='On rent'?'On rent to':x.status==='Sold'?'Sold to':'Held for'} <b>${esc(x.hold)}</b></span></div>` : ''}
+      <div class="card">
+        <div class="kv"><span>Condition</span><span>${x.cond}</span></div>
+        <div class="kv"><span>Year</span><span>${x.year}</span></div>
+        <div class="kv"><span>Hours</span><span>${x.hours.toLocaleString()}</span></div>
+        <div class="kv"><span>Serial no.</span><span>${esc(x.serial)}</span></div>
+        <div class="kv"><span>Yard</span><span>${esc(x.yard)}</span></div>
+        <div class="kv"><span>In stock</span><span>${ageTxt(x.age)}</span></div>
+      </div>`,
+    footer: x.status==='Sold' ? '' : `${x.status==='Available'?`<button class="btn dk" data-act="allocate" data-id="${x.id}">${ic('tag')}Allocate</button>`:''}
+      ${x.rent?`<button class="btn view grow" data-go="quoteform" data-p="${pj({type:'rental', stockId:x.id})}">${ic('cal')}Rent</button>`:''}
+      <button class="btn pri grow" data-go="quoteform" data-p="${pj({type:'sale', stockId:x.id})}">${ic('doc')}Quote</button>`
+  };
+};
+
+/* ── Leads (sales and show) ── */
+function leadCards(show){
+  const s = UI.lSearch.trim().toLowerCase();
+  const list = DB.leads.filter(l => l.rep===me() && !!l.show===!!show && (UI.lStatus==='All' || l.status===UI.lStatus)
+    && (!s || [l.company,l.contact,l.interest,l.showName].join(' ').toLowerCase().includes(s)))
+    .sort((a,b)=> b.id.localeCompare(a.id, undefined, {numeric:true}));
+  if(!list.length) return '<div class="empty">No leads here.</div>';
+  return list.map(l => { const k = l.followUp ? daysFrom(l.followUp) : null; return `<div class="card tap lc" data-go="lead" data-id="${l.id}">
+    <div class="row" style="align-items:flex-start"><span class="nm sp">${esc(l.company)}</span>${pill(l.status)}</div>
+    <div class="row"><div class="meta sp ell">${esc(l.interest||'—')} · ${esc(first(l.rep))} · ${rate(l.priority)}</div><span class="hash">#${num(l.id)}</span></div>
+    ${l.show?`<div class="tag">${ic('users','xs')} ${esc(l.showName)}</div>`:''}
+    ${l.followUp && !['Closed/Won','Lost Sale'].includes(l.status) ? `<div class="tag" style="color:${k<0?'var(--red)':k===0?'var(--amber)':'var(--ink-3)'}">${ic('bell','xs')} Follow up ${rel(l.followUp).toLowerCase()}</div>` : ''}
+    <div class="acts"><button class="btn view" data-go="lead" data-id="${l.id}">View</button>
+      <button class="btn dk" data-go="leadform" data-p="${pj({id:l.id})}">Edit</button>
+      <button class="btn pri wide" data-go="quoteform" data-p="${pj({type:'sale', leadId:l.id})}">${ic('doc')}Quote</button></div>
+  </div>`; }).join('');
+}
+SCREENS.leads = ({show}) => ({
+  header: hdr(show ? 'Show Leads' : 'Sales Leads'),
+  body:`<div class="filter"><div class="search" style="margin:0">${ic('search')}<input id="ls" placeholder="Search…" value="${esc(UI.lSearch)}"></div>
+      <select class="inp" id="lst" style="width:120px;flex:none">${['All',...LEAD_STATUS].map(s=>`<option ${UI.lStatus===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    <div style="height:10px"></div><div id="llist">${leadCards(show)}</div>`,
+  footer:`<button class="btn pri grow" data-go="leadform" data-p="${pj({show:!!show})}">${ic('plus')}Add New ${show?'Show ':''}Lead</button>`,
+  after(){
+    $('#ls').addEventListener('input', e => { UI.lSearch = e.target.value; $('#llist').innerHTML = leadCards(show); });
+    $('#lst').addEventListener('change', e => { UI.lStatus = e.target.value; $('#llist').innerHTML = leadCards(show); });
+  }
+});
+SCREENS.lead = ({id}) => {
+  const l = leadById(id); const qs = DB.quotes.filter(q => q.leadId===id || (q.company && q.company===l.company));
+  const k = l.followUp ? daysFrom(l.followUp) : null;
+  return {
+    header: hdr(l.company, {sub:`${l.show?'Show lead':'Sales lead'} #${num(l.id)}`, right:`<button class="ic" data-go="leadform" data-p="${pj({id:l.id})}" aria-label="Edit">${ic('edit')}</button>`}),
+    body:`<div class="card">
+        <div class="row">${pill(l.status)}${rate(l.priority)}<span class="sp"></span><span class="xs mut">Added ${fdate(l.added)}</span></div>
+        <div class="b" style="font-size:18px;margin-top:6px">${esc(l.contact)}</div>
+        <div class="sm mut">${esc(l.phone)}</div>
+        <div class="kv" style="margin-top:8px"><span>Machine of interest</span><span>${esc(l.interest||'—')}</span></div>
+        ${l.show?`<div class="kv"><span>Show</span><span>${esc(l.showName)}</span></div>`:''}
+        <div class="kv"><span>Sales rep</span><span>${esc(l.rep)}</span></div>
+        <div class="kv"><span>On file</span><span>${l.customerId?'Yes':'<span style="color:var(--amber)">Not yet a customer</span>'}</span></div>
+      </div>
+      <div class="card row" style="gap:12px">
+        <div style="width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:${k!==null&&k<=0?'var(--red-soft)':'var(--g-soft)'};color:${k!==null&&k<=0?'var(--red)':'var(--g-2)'}">${ic('bell')}</div>
+        <div class="sp"><div class="xs mut">Next follow-up</div><b>${l.followUp?`${fdate(l.followUp)} · ${rel(l.followUp)}`:'Not set'}</b></div>
+        <label class="btn sm ghost" style="position:relative">${ic('cal')}Change<input type="date" data-act="followup" data-id="${l.id}" value="${l.followUp||''}" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label>
+      </div>
+      <div class="sec">Notes & history</div>
+      <div class="card">
+        <div class="row" style="gap:6px;margin-bottom:14px"><input class="inp" id="newnote" placeholder="Add a note…" style="height:44px"><button class="btn pri sm" style="height:44px" data-act="addnote" data-id="${l.id}">Add</button></div>
+        <div class="tl">${l.notes.map(x=>`<div class="n"><div class="xs mut">${fdate(x.d)} · ${esc(x.by)}</div><div class="sm">${esc(x.t)}</div></div>`).join('')}</div>
+      </div>
+      <div class="sec">Quotes for this lead</div>
+      ${qs.length ? qs.map(q=>`<div class="card tap row" data-go="quote" data-id="${q.id}"><span class="sp ell"><b class="sm">#${num(q.id)}</b> ${pill(q.status)}<div class="xs mut ell">${esc(itemLong(q))}</div></span><b class="num">${money(calc(q).total)}</b></div>`).join('')
+        : '<div class="card empty" style="padding:16px">No quotes yet</div>'}`,
+    footer:`<button class="btn view grow" data-go="visitform" data-p="${pj({company:l.company})}">${ic('pin')}Log visit</button><button class="btn pri grow" data-go="quoteform" data-p="${pj({type:'sale', leadId:l.id})}">${ic('doc')}Create quote</button>`
+  };
+};
+SCREENS.leadform = ({id, show}) => {
+  const e = here();
+  if(!e.d){
+    const src = id && leadById(id);
+    e.d = src ? {...clone(src), customCust:!src.customerId, customProd:!!src.interest && !products().some(p=>`${p.brand} ${p.model}`===src.interest)}
+      : {id:null, customerId:'', company:'', contact:'', phone:'', interest:'', rep:me(), status:'New', priority:3, followUp:dd(7), show:!!show, showName:show?SHOWS[0]:'', added:dd(0), notes:[], note:'', customCust:false, customProd:false};
+  }
+  const l = e.d;
+  return {
+    header: hdr(id ? 'Edit Lead' : l.show ? 'New Show Lead' : 'New Sales Lead', {sub: id ? l.company : `Assigned to ${l.rep}`}),
+    body:`
+      ${l.show ? F('Show','showName',{opts:SHOWS}) : ''}
+      <div class="fld"><label>Customer name</label>${l.customCust
+        ? `<div class="g2"><input class="inp" data-f="contact" value="${esc(l.contact)}" placeholder="Contact name"><input class="inp" data-f="company" value="${esc(l.company)}" placeholder="Company"></div>`
+        : `<select class="inp" data-pick="leadcust">${customerOptions(l.customerId)}</select>`}
+        <button class="btn tiny" data-act="tog" data-f="customCust">${l.customCust?'Choose existing customer':'Enter Custom Customer'}</button></div>
+      ${F('Phone','phone',{type:'tel', ph:'e.g. (979) 555-0100'})}
+      <div class="fld"><label>Machine of interest</label>${l.customProd
+        ? `<input class="inp" data-f="interest" value="${esc(l.interest)}" placeholder="e.g. Used cone crusher">`
+        : `<select class="inp" data-pick="leadprod">${productOptions(products().find(p=>`${p.brand} ${p.model}`===l.interest)?.key || '')}</select>`}
+        <button class="btn tiny" data-act="tog" data-f="customProd">${l.customProd?'Choose from product list':'Enter Custom Product'}</button></div>
+      ${F('Status','status',{opts:LEAD_STATUS})}
+      <div class="fld"><div class="lbl">Priority <i>4 = hottest</i></div><div class="stars">${[1,2,3,4].map(i=>`<button class="${l.priority===i?'on':''}" data-act="set" data-f="priority" data-v="${i}">${Array(i).fill(ic('star')).join('')}&nbsp;${i}</button>`).join('')}</div></div>
+      ${F('Follow-up date','followUp',{type:'date', hint:'You get a reminder on this date.'})}
+      ${F('Assigned rep','rep',{opts:REPS.map(r=>r.name)})}
+      ${!id ? F('Notes','note',{area:true, rows:3, opt:true}) : ''}`,
+    footer:`<button class="btn pri grow" data-act="savelead">${ic('save')}Save Lead</button>`
+  };
+};
+
+/* ── Customers ── */
+function custCards(){
+  const s = UI.cSearch.trim().toLowerCase();
+  const list = DB.customers.filter(c => !s || [c.name,c.company,c.email,c.city].join(' ').toLowerCase().includes(s));
+  return list.map(c => `<div class="card tap lc" data-go="customerform" data-p="${pj({id:c.id})}">
+      <div class="row" style="align-items:flex-start"><span class="nm sp">${esc(c.name)}</span><span class="chipdate">${fdate(c.added)}</span></div>
+      <div class="row" style="align-items:flex-end"><div class="sp meta">
+        <div><b>Company:</b> ${esc(c.company)}</div>${c.email?`<div>${esc(c.email)}</div>`:''}<div>${esc(c.phone)}</div>
+        <div>${esc([c.address, c.city].filter(Boolean).join(', '))} ${esc(c.zip)}</div>
+        ${c.cert?`<div class="tag"><span class="pill green">Tax exempt</span></div>`:''}</div><span class="hash">#${num(c.id)}</span></div>
+    </div>`).join('') || '<div class="empty">No customers match.</div>';
+}
+SCREENS.customers = () => ({
+  header: hdr('Customers', {sub:`${DB.customers.length} on file`}),
+  body:`<div class="search">${ic('search')}<input id="cs" placeholder="Search by name, company, or email…" value="${esc(UI.cSearch)}"></div><div id="clist">${custCards()}</div>`,
+  footer:`<button class="btn pri grow" data-go="customerform" data-p="${pj({})}">${ic('plus')}Add Customer</button>`,
+  after(){ $('#cs').addEventListener('input', e => { UI.cSearch = e.target.value; $('#clist').innerHTML = custCards(); }); }
+});
+SCREENS.customerform = ({id, pick}) => {
+  const e = here();
+  if(!e.d) e.d = id ? clone(custById(id)) : {id:null, name:'', phone:'', email:'', company:'', address:'', city:'', zip:'', cert:'', added:dd(0)};
+  const qn = id ? DB.quotes.filter(q=>q.customerId===id) : [];
+  return {
+    header: hdr(id ? 'Edit Customer' : 'Add Customer', {dark:true, sub: pick ? 'Goes straight onto the quote' : ''}),
+    body:`${F('Name','name',{ph:'Name'})}${F('Phone','phone',{type:'tel', ph:'Phone'})}${F('Email','email',{type:'email', ph:'Email'})}
+      ${F('Company','company',{ph:'Company'})}${F('Address','address',{ph:'Street'})}
+      <div class="g21">${F('City, State','city',{ph:'La Grange, TX'})}${F('ZIP code','zip',{num:true, ph:'78945'})}</div>
+      ${F('Sales tax exemption certificate','cert',{opt:true, ph:'Certificate no. / type', hint:'For resale, manufacturing or agricultural exemptions — quotes for this customer default to tax exempt.'})}
+      ${qn.length ? `<div class="sec">Quotes</div>${qn.map(q=>`<div class="card tap row" data-go="quote" data-id="${q.id}"><span class="sp ell"><b class="sm">#${num(q.id)}</b> ${pill(q.status)}<div class="xs mut ell">${esc(itemLong(q))}</div></span><b class="num">${money(calc(q).total)}</b></div>`).join('')}` : ''}`,
+    footer:`<button class="btn pri grow" data-act="savecust">${ic('save')}Save Customer</button>`
+  };
+};
+
+/* ── Requested equipment ── */
+SCREENS.requests = () => ({
+  header: hdr('Requested Equipment', {sub:'What customers have asked us to find'}),
+  body: DB.requests.map(r => { const k = r.needBy ? daysFrom(r.needBy) : null; const m = r.match && stockById(r.match); return `<div class="card tap lc" data-go="requestform" data-p="${pj({id:r.id})}">
+      <div class="row" style="align-items:flex-start"><span class="nm sp">${esc(r.company)}</span>${pill(r.status)}</div>
+      <div class="meta">${esc(r.wanted)}</div>
+      <div class="row"><div class="meta sp">${esc(r.cond)}${n(r.budget)?` • up to ${money(n(r.budget))}`:''} • ${esc(first(r.rep))}</div><span class="hash">#${num(r.id)}</span></div>
+      ${r.needBy?`<div class="tag" style="color:${k<0&&r.status!=='Found'?'var(--red)':'var(--ink-3)'}">${ic('cal','xs')} Needed by ${fdate(r.needBy)}</div>`:''}
+      ${m?`<div class="tag" style="color:var(--g-2)">${ic('check','xs')} Matched: ${esc(m.brand)} ${esc(m.model)} · ${esc(m.yard)}</div>`:''}
+      <div class="acts"><button class="btn view" data-act="matchstock" data-id="${r.id}">${ic('box')}Match stock</button>
+        <button class="btn pri wide" data-go="quoteform" data-p="${pj({type:r.cond==='Rental'?'rental':'sale', customerId:r.customerId, ...(m?{stockId:m.id}:{})})}">${ic('doc')}Quote</button></div>
+    </div>`; }).join(''),
+  footer:`<button class="btn pri grow" data-go="requestform" data-p="${pj({})}">${ic('plus')}Add Request</button>`
+});
+SCREENS.requestform = ({id}) => {
+  const e = here();
+  if(!e.d) e.d = id ? clone(reqById(id)) : {id:null, customerId:'', company:'', contact:'', wanted:'', cond:'Used', budget:'', needBy:dd(30), status:'Open', rep:me(), date:dd(0), notes:''};
+  return {
+    header: hdr(id ? `Request #${num(id)}` : 'New Request'),
+    body:`<div class="fld"><label>Customer name</label><select class="inp" data-pick="reqcust">${customerOptions(D().customerId)}</select></div>
+      ${F('Equipment wanted','wanted',{ph:'e.g. Used cone crusher, 250–300 tph'})}
+      <div class="fld"><div class="lbl">Looking for</div>${seg('cond',[['New','New'],['Used','Used'],['Rental','Rental']])}</div>
+      <div class="g2">${F('Budget','budget',{pre:'$', num:true, opt:true})}${F('Needed by','needBy',{type:'date'})}</div>
+      ${F('Status','status',{opts:['Open','Sourcing','Found','Closed']})}
+      ${F('Notes','notes',{area:true, rows:3, opt:true})}`,
+    footer:`<button class="btn pri grow" data-act="savereq">${ic('save')}Save Request</button>`
+  };
+};
+
+/* ── Site visits ── */
+SCREENS.visits = () => ({
+  header: hdr('Site Visits'),
+  body: DB.visits.filter(v=>v.rep===me()).sort((a,b)=>a.date<b.date?1:-1).map(v => { const k = v.revisit ? daysFrom(v.revisit) : null; return `<div class="card lc">
+      <div class="row" style="align-items:flex-start"><span class="nm sp">${esc(v.company)}</span><span class="chipdate">${fdate(v.date)}</span></div>
+      <div class="meta" style="margin-top:4px">${esc(v.notes)}</div>
+      ${v.revisit ? `<div class="tag b" style="margin-top:8px;color:${k<=1?'var(--red)':'var(--g-2)'}">${ic('bell','xs')} Revisit ${fdate(v.revisit)} · ${rel(v.revisit)}</div>` : '<div class="tag" style="margin-top:8px">No revisit needed</div>'}
+    </div>`; }).join('') || '<div class="empty">No visits yet.</div>',
+  footer:`<button class="btn pri grow" data-go="visitform" data-p="${pj({})}">${ic('plus')}Add Site Visit</button>`
+});
+SCREENS.visitform = ({company}) => {
+  const e = here();
+  if(!e.d) e.d = {company:company||'', notes:'', revisit:dd(14)};
+  return {
+    header: hdr('Add Site Visit', {sub:`${fdate(dd(0))} · ${me()}`}),
+    body:`<div class="banner b">${ic('info')}<span>Three fields — quick to fill in from the truck before you leave site.</span></div>
+      ${F('Customer','company',{ph:'Start typing…'})}
+      <datalist id="cust">${[...new Set([...DB.customers.map(c=>c.company), ...DB.leads.map(l=>l.company)])].map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
+      ${F('What was discussed','notes',{area:true, rows:5, ph:'Material, tonnage, machines looked at, next steps'})}
+      ${F('Revisit date','revisit',{type:'date', opt:true, hint:'Reminder notification on this date.'})}`,
+    footer:`<button class="btn pri grow" data-act="savevisit">${ic('save')}Save Site Visit</button>`,
+    after(){ $('[data-f="company"]').setAttribute('list','cust'); }
+  };
+};
+
+/* ── Parts & services ── */
+SCREENS.service = () => {
+  const e = here();
+  if(!e.d) e.d = {kind:'Parts', company:'', machine:'', text:'', urgent:false};
+  const d = e.d;
+  return {
+    header: hdr('Parts & Services', {sub:'Request forms'}),
+    body:`<div class="fld">${seg('kind',[['Parts','Parts request'],['Service','Service request']])}</div>
+      ${F('Customer','company',{ph:'Company'})}
+      ${F('Machine','machine',{ph:'Make, model, serial'})}
+      ${F(d.kind==='Parts'?'Parts needed':'Problem','text',{area:true, rows:3, ph:d.kind==='Parts'?'Part numbers, wear parts, belting…':'What is wrong, where the machine is'})}
+      <div class="card">${sw('urgent', d.kind==='Parts'?'Machine down — rush':'Machine down — 24/7 call-out', d.kind==='Parts'?'Ships same day from La Grange':`Goes straight to Service ${COMPANY.service}`)}</div>
+      <div class="sec">Recent requests</div>
+      ${DB.svc.map(r=>`<div class="card lc"><div class="row"><span class="pill ${r.kind==='Parts'?'blue':'yel'}">${r.kind}</span>${r.urgent?'<span class="pill red">Machine down</span>':''}<span class="sp"></span><span class="chipdate">${fdate(r.date)}</span></div>
+        <div class="b" style="margin-top:6px">${esc(r.company)}</div><div class="sm mut">${esc(r.machine)} — ${esc(r.text)}</div><div class="xs b" style="margin-top:6px;color:var(--g-2)">${esc(r.status)}</div></div>`).join('')}`,
+    footer:`<button class="btn pri grow" data-act="saveservice">${ic('send')}Send to ${d.kind==='Parts'?'parts desk':'service'}</button>`
+  };
+};
+
+/* ── My Account ── */
+SCREENS.account = () => {
+  const mq = DB.quotes.filter(q=>q.rep===me()), mo = DB.orders.filter(o=>o.rep===me()), ml = DB.leads.filter(l=>l.rep===me());
+  const stat = (count, title, sub, to, p={}) => `<button class="stat" data-go="${to}" data-p="${pj(p)}"><span class="n">${count}</span><b>${title}</b><small>${sub}</small></button>`;
+  const add = (title, sub, to, p={}) => `<button class="stat" data-go="${to}" data-p="${pj(p)}"><span class="pl">${ic('plus')}</span><b>${title}</b><small>${sub}</small></button>`;
+  return {
+    tabs:'account',
+    header: hdr('My Account', {dark:true, noBack:true, sub:`${me()} · ${REPS.find(r=>r.name===me())?.area}`}),
+    body:`<div class="acc">
+      <h3>Quotes</h3><div class="stats">
+        ${stat(mq.filter(q=>q.status==='Draft').length,'Drafts','View in progress quotations','quotes',{status:'Draft'})}
+        ${stat(mq.filter(q=>q.status==='Sent').length,'Sent','View sent quotations list','quotes',{status:'Sent'})}</div>
+      <h3>Orders</h3><div class="stats">
+        ${stat(mo.filter(o=>o.status==='Draft').length,'Drafts','View draft sales orders','orders',{status:'Draft'})}
+        ${stat(mo.filter(o=>o.status==='Sent').length,'Sent','View sent sales order list','orders',{status:'Sent'})}
+        ${stat(mo.filter(o=>o.status==='Completed').length,'Completed','View completed sales order list','orders',{status:'Completed'})}</div>
+      <h3>Sales Leads and Site Visits</h3><div class="stats">
+        ${stat(ml.filter(l=>!l.show).length,'Sales Leads','View sales leads','leads',{})}
+        ${add('Add Lead','Upload new lead','leadform',{})}
+        ${stat(ml.filter(l=>l.show).length,'Show Leads','View show leads','leads',{show:true})}
+        ${add('Add Show Lead','Upload new show lead','leadform',{show:true})}
+        ${stat(DB.visits.filter(v=>v.rep===me()).length,'Site Visits','View site visits','visits',{})}
+        ${add('Add Site Visit','Upload new site visit','visitform',{})}</div>
+      <h3>Customers</h3><div class="stats">
+        ${stat(DB.customers.length,'Customers','View customer list','customers',{})}
+        ${add('Add Customer','New customer record','customerform',{})}</div>
+      <h3>Demo</h3>
+      <div class="card"><div class="fld"><label>Sign in as</label><select class="inp" id="who">${REPS.map(r=>`<option ${r.name===me()?'selected':''}>${r.name}</option>`).join('')}</select></div>
+        <button class="btn full ghost" data-act="reset">${ic('refresh')}Reset the demo data</button></div>
+      <button class="logout" data-act="toast" data-v="Signed out (wireframe)">${ic('logout')}Logout</button></div>`,
+    after(){ $('#who').addEventListener('change', e => { DB.me = e.target.value; toast(`Signed in as ${DB.me}`); render({keep:true}); }); }
+  };
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Layers: sheets, modals, toast
+   ═══════════════════════════════════════════════════════════════════════════ */
+function sheet(title, html, o={}){
+  const centred = o.title==='center';
+  $('#layer').innerHTML = `<div class="scrim ${o.center?'center':''}" data-act="scrim"><div class="sheet">${o.center?'':'<div class="grab"></div>'}
+    <div class="sh ${centred?'c':''}"><b>${title}</b>${centred?'':`<button class="x" data-act="close" aria-label="Close">${ic('x')}</button>`}</div><div class="sb">${html}</div></div></div>`;
+}
+function closeLayer(){ $('#layer').innerHTML = ''; }
+let toastT;
+function toast(msg, bad){
+  document.querySelector('.toast')?.remove();
+  const t = document.createElement('div'); t.className = 'toast' + (bad?' bad':''); t.innerHTML = ic(bad?'alert':'check') + `<span>${esc(msg)}</span>`;
+  $('#screen').appendChild(t); clearTimeout(toastT); toastT = setTimeout(()=>t.remove(), 2600);
+}
+const markErr = fs => { fs.forEach(f => document.querySelector(`[data-f="${f}"],[data-pick="${f}"]`)?.classList.add('err')); document.querySelector('.err')?.scrollIntoView({block:'center', behavior:'smooth'}); };
+
+/* Quote save, shared by "Save Quote" and "→ Order". Returns the id, or null. */
+function saveQuote(){
+  const q = D(); const bad = [];
+  if(!q.items.length){ toast('Add at least one item', true); return null; }
+  if(!q.contact.trim() && !q.company.trim()) bad.push('customer');
+  q.items.forEach((i,k) => { if(!String(i.model).trim()) bad.push(i.custom ? `items.${k}.model` : 'product'); if(!n(i.price)) bad.push(`items.${k}.price`); });
+  if(bad.length){ markErr(bad); toast('Fill in the highlighted fields', true); return null; }
+  if(q.type==='rental') q.items.forEach(i => { if(n(i.months)<1) i.months = 1; });
+  q.extras = (q.extras||[]).filter(x => String(x.desc).trim() || n(x.price));
+  if(!q.id){ q.id = 'Q-' + (DB.nextQ++); DB.quotes.unshift(clone(q)); }
+  else { const k = DB.quotes.findIndex(x=>x.id===q.id); DB.quotes[k] = clone(q); }
+  return q.id;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Actions
+   ═══════════════════════════════════════════════════════════════════════════ */
+const ACT = {
+  back, close: closeLayer,
+  home: () => jump('home'), account: () => jump('account'),
+  scrim: (el, e) => { if(e.target===el) closeLayer(); },
+  create: openCreate, pickorder: pickOrder,
+  toast: el => toast(el.dataset.v),
+  clearq: () => go('quotes', {}, {replace:true}),
+  set: el => {
+    const v = JSON.parse(el.dataset.v); const f = el.dataset.f; const d = D();
+    setPath(d, f, v);
+    if(f==='type'){ d.items.forEach(i => { const s = i.stockId && stockById(i.stockId); const p = i.product && productBy(i.product); if(s) i.price = v==='rental' ? (s.rent ?? '') : s.price; else if(p) i.price = v==='rental' ? (p.rent ?? '') : p.price; }); d.notes = blankQuote(v).notes; }
+    render({keep:true});
+  },
+  tog: el => { setPath(D(), el.dataset.f, !getPath(D(), el.dataset.f)); render({keep:true}); },
+  custom: el => { const it = D().items[+el.dataset.v]; it.custom = !it.custom; if(it.custom){ it.product=''; it.stockId=null; it.serial=''; } else { it.model=''; it.brand=''; } render({keep:true}); },
+  additem: () => { D().items.push(blankItem()); render({keep:true}); toast(`Item ${D().items.length} added`); },
+  rmitem: el => { D().items.splice(+el.dataset.v, 1); render({keep:true}); },
+  addextra: () => { (D().extras ??= []).push({desc:'', price:'', qty:1}); render({keep:true}); },
+  rmextra: el => { D().extras.splice(+el.dataset.v, 1); render({keep:true}); },
+  fromstock: el => {
+    const k = +el.dataset.v; const rental = D().type==='rental';
+    const list = DB.stock.filter(s => s.status==='Available' && (!rental || s.rent));
+    sheet(rental ? 'Pick from rental fleet' : 'Pick from stock', `<div class="search">${ic('search')}<input id="pick" placeholder="Search model or yard"></div><div id="picklist">${pickList(list,'',k)}</div>`);
+    $('#pick').addEventListener('input', e => { $('#picklist').innerHTML = pickList(list, e.target.value.toLowerCase(), k); });
+  },
+  pick: el => { const s = stockById(el.dataset.id); D().items[+el.dataset.k] = stockItem(s, D().type); closeLayer(); render({keep:true}); toast(`${s.brand} ${s.model} added`); },
+  savequote: () => { const id = saveQuote(); if(id){ go('quote', {id}, {replace:true}); toast(`Quote #${num(id)} saved`); } },
+  saveorder2: () => { const id = saveQuote(); if(id){ STACK.pop(); STACK.push({n:'quote', p:{id}}); go('orderform', {quoteId:id}); toast(`Quote #${num(id)} saved — now the order`); } },
+  send: el => { const q = quoteById(el.dataset.id); if(q.status==='Draft') q.status = 'Sent'; render({keep:true}); toast(`Quote #${num(q.id)} emailed to ${q.email || q.contact || q.company}`); },
+  dup: el => {
+    const q = quoteById(el.dataset.id);
+    sheet('Duplicate quote', `<div class="card sm"><b>#${num(q.id)}</b> · ${esc(q.company||q.contact)}<div class="mut">${esc(itemLong(q))} · ${money(calc(q).total)}</div></div>
+      <div class="fld"><label>New quote for</label><select class="inp" id="dupc">${customerOptions('')}</select></div>
+      <div class="banner b">${ic('info')}<span>Items, pricing, trade-in and terms are copied across. You can change anything before saving.</span></div>
+      <button class="btn pri full" data-act="dodup" data-id="${q.id}">${ic('copy')}Create duplicate quote</button>`, {center:true});
+  },
+  dodup: el => {
+    const c = custById($('#dupc').value); if(!c){ $('#dupc').classList.add('err'); return; }
+    const src = quoteById(el.dataset.id);
+    const d = {...clone(src), id:null, status:'Draft', date:dd(0), validUntil:dd(30), rep:me(), soId:undefined, leadId:undefined};
+    applyCustomer(d, c); go('quoteform', {type:src.type}, {d});
+  },
+  requote: el => {
+    const src = quoteById(el.dataset.id);
+    go('quoteform', {type:src.type}, {d:{...clone(src), id:null, status:'Draft', date:dd(0), validUntil:dd(30), rep:me(), soId:undefined}}); toast('Copied — check prices and stock before saving');
+  },
+  convert: el => {
+    const q = quoteById(el.dataset.id);
+    sheet('Convert to Sales Order', `<div class="card sm"><b>#${num(q.id)}</b> · ${esc(q.company||q.contact)}<div class="mut">${esc(itemLong(q))} · ${money(calc(q).total)}</div></div>
+      <p class="sm" style="color:var(--ink-2);margin:4px 2px 14px">Do you want to review or change anything on the quote before it becomes a sales order?</p>
+      <div style="display:grid;gap:8px"><button class="btn pri full" data-go="orderform" data-p="${pj({quoteId:q.id})}">${ic('cart')}Continue to sales order</button>
+      <button class="btn dk full" data-go="quoteform" data-p="${pj({id:q.id})}">${ic('edit')}Edit the quote first</button></div>`, {center:true});
+  },
+  saveorder: el => {
+    const d = D(); const q = quoteById(d.quoteId); const status = el.dataset.v;
+    const id = 'SO-' + (DB.nextSO++);
+    DB.orders.unshift({id, quoteId:q.id, company:q.company||q.contact, date:dd(0), rep:me(), delivery:d.delivery, site:d.site, warranty:d.warranty, deposit:d.deposit, depositIn:d.depositIn, pdi:d.pdi, notes:d.notes, status});
+    q.status = 'Converted'; q.soId = id;
+    q.items.forEach(i => { const s = i.stockId && stockById(i.stockId); if(s){ s.status = q.type==='rental' ? 'On rent' : 'Sold'; s.hold = q.company||q.contact; } });
+    const L = DB.leads.find(l => l.id===q.leadId); if(L && q.type==='sale') L.status = 'Closed/Won';
+    go('order', {id}, {replace:true}); toast(status==='Draft' ? `${id} saved as draft` : `${id} sent to the office${d.pdi?' · PDI requested':''}`);
+  },
+  ostatus: el => { const o = orderById(el.dataset.id); o.status = el.dataset.v; render({keep:true}); toast(o.status==='Sent' ? `${o.id} sent to the office` : `${o.id} completed`); },
+  allocate: el => {
+    const s = stockById(el.dataset.id);
+    sheet('Allocate machine', `<div class="card sm"><span class="brand">${esc(s.brand)}</span><div class="b">${esc(s.model)}</div><div class="mut">S/N ${esc(s.serial)} · ${esc(s.yard)}</div></div>
+      <div class="fld"><label>Hold for customer</label><select class="inp" id="alc">${customerOptions('')}</select></div>
+      <div class="fld"><label>Hold for</label><select class="inp" id="aldays"><option>7 days</option><option>14 days</option><option>30 days</option></select></div>
+      <div class="banner b">${ic('send')}<span>Goes to the sales office to mark on the system. Other reps see it as allocated straight away.</span></div>
+      <button class="btn pri full" data-act="doalloc" data-id="${s.id}">${ic('tag')}Send allocation request</button>`, {center:true});
+  },
+  doalloc: el => {
+    const c = custById($('#alc').value); if(!c){ $('#alc').classList.add('err'); return; }
+    const s = stockById(el.dataset.id); s.status = 'Allocated'; s.hold = `${c.company} · ${$('#aldays').value}`;
+    closeLayer(); render({keep:true}); toast(`${s.model} held for ${c.company}`);
+  },
+  matchstock: el => {
+    const r = reqById(el.dataset.id);
+    const words = r.wanted.toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>3);
+    const list = DB.stock.filter(s => s.status==='Available' && (r.cond==='Rental' ? s.rent : r.cond==='New' ? s.cond==='New' : true));
+    const scored = list.map(s => ({s, k: words.filter(w => [s.type,s.desc,s.model].join(' ').toLowerCase().includes(w.replace(/s$/,''))).length})).sort((a,b)=>b.k-a.k);
+    sheet('Match from stock', `<div class="card sm"><b>${esc(r.company)}</b><div class="mut">${esc(r.wanted)}</div></div>` +
+      (scored.slice(0,6).map(({s,k}) => `<button class="opt" data-act="domatch" data-id="${r.id}" data-s="${s.id}"><span class="oi">${ic('box')}</span><span class="sp ell"><b class="ell">${esc(s.brand)} ${esc(s.model)}</b><small class="ell">${s.cond} · ${esc(s.yard)} · ${r.cond==='Rental'?money(s.rent)+'/mo':money(s.price)}</small></span>${k?'<span class="pill green">Close match</span>':''}</button>`).join('') || '<div class="empty">Nothing available.</div>'));
+  },
+  domatch: el => { const r = reqById(el.dataset.id); r.match = el.dataset.s; r.status = 'Found'; closeLayer(); render({keep:true}); toast(`Matched — ${stockById(r.match).model} for ${r.company}`); },
+  followup: () => {},
+  addnote: el => { const v = $('#newnote').value.trim(); if(!v) return; leadById(el.dataset.id).notes.unshift({d:dd(0), by:me(), t:v}); render({keep:true}); toast('Note added'); },
+  savelead: () => {
+    const l = D();
+    if(!l.company.trim() && !l.contact.trim()){ markErr(l.customCust ? ['contact','company'] : ['leadcust']); toast('Choose or enter a customer', true); return; }
+    if(!l.company) l.company = l.contact;
+    const rec = clone(l); delete rec.customCust; delete rec.customProd; delete rec.note;
+    if(!rec.id){ rec.id = 'L' + (DB.nextL++); if(l.note?.trim()) rec.notes = [{d:dd(0), by:me(), t:l.note.trim()}]; DB.leads.unshift(rec); }
+    else { const k = DB.leads.findIndex(x=>x.id===rec.id); DB.leads[k] = rec; }
+    go('lead', {id:rec.id}, {replace:true}); toast(`${rec.show?'Show lead':'Lead'} saved`);
+  },
+  savecust: () => {
+    const c = D(); if(!c.name.trim()){ markErr(['name']); toast('Name is required', true); return; }
+    if(!c.id){ c.id = 'C' + (DB.nextC++); DB.customers.unshift(clone(c)); }
+    else { const k = DB.customers.findIndex(x=>x.id===c.id); DB.customers[k] = clone(c); }
+    const pick = here().p.pick; const saved = custById(c.id);
+    STACK.pop();
+    if(pick && D()) applyCustomer(D(), saved);
+    closeLayer(); render({keep:!!pick}); toast(pick ? `${saved.name} added to the quote` : 'Customer saved');
+  },
+  savereq: () => {
+    const r = D(); const bad = []; if(!r.customerId) bad.push('reqcust'); if(!r.wanted.trim()) bad.push('wanted');
+    if(bad.length){ markErr(bad); toast('Fill in the highlighted fields', true); return; }
+    if(!r.id){ r.id = 'RQ' + (DB.nextRQ++); DB.requests.unshift(clone(r)); }
+    else { const k = DB.requests.findIndex(x=>x.id===r.id); DB.requests[k] = clone(r); }
+    back(); toast('Request saved');
+  },
+  savevisit: () => {
+    const v = D(); if(!v.company.trim()){ markErr(['company']); toast('Customer is required', true); return; }
+    DB.visits.unshift({id:'V'+(DB.nextV++), company:v.company, date:dd(0), rep:me(), notes:v.notes || '—', revisit:v.revisit || null});
+    const L = DB.leads.find(l => l.company===v.company); if(L){ L.notes.unshift({d:dd(0), by:me(), t:'Site visit: ' + (v.notes||'—')}); if(v.revisit) L.followUp = v.revisit; }
+    STACK.pop(); if(here().n!=='visits') STACK.push({n:'visits', p:{}}); render(); toast(`Site visit saved${v.revisit?` · reminder ${fdate(v.revisit)}`:''}`);
+  },
+  saveservice: () => {
+    const d = D(); if(!d.company.trim()){ markErr(['company']); toast('Customer is required', true); return; }
+    DB.svc.unshift({id:'R'+(DB.nextR++), kind:d.kind, company:d.company, machine:d.machine||'—', text:d.text||'—', urgent:d.urgent, date:dd(0), status:'Sent'});
+    here().d = null; render(); toast(d.kind==='Parts' ? 'Sent to the parts desk' : d.urgent ? 'Service paged — machine down' : 'Sent to service');
+  },
+  reset: () => { DB = seed(); jump('home'); toast('Demo data reset'); }
+};
+function pickList(list, s, k){
+  const r = list.filter(x => !s || [x.brand,x.model,x.yard,x.type].join(' ').toLowerCase().includes(s));
+  const rental = D()?.type==='rental';
+  return r.map(x=>`<button class="opt" data-act="pick" data-id="${x.id}" data-k="${k}"><span class="oi">${ic('box')}</span><span class="sp ell"><b class="ell">${esc(x.brand)} ${esc(x.model)}</b><small class="ell">${x.cond} · ${esc(x.yard)} · ${rental?money(x.rent)+'/mo':money(x.price)}</small></span>${ic('plus')}</button>`).join('') || '<div class="empty">Nothing available.</div>';
+}
+
+/* Pickers: selects that fill several fields at once. */
+const PICK = {
+  customer: el => applyCustomer(D(), custById(el.value)),
+  product: el => {
+    const d = D(); const it = d.items[+el.dataset.k]; const p = productBy(el.value);
+    Object.assign(it, p ? {product:p.key, brand:p.brand, model:p.model, desc:p.desc, price: d.type==='rental' ? (p.rent ?? '') : p.price, stockId:null, serial:''} : {product:'', brand:'', model:'', desc:'', price:''});
+  },
+  leadcust: el => { const c = custById(el.value); Object.assign(D(), c ? {customerId:c.id, company:c.company, contact:c.name, phone:c.phone} : {customerId:'', company:'', contact:'', phone:''}); },
+  leadprod: el => { const p = productBy(el.value); D().interest = p ? `${p.brand} ${p.model}` : ''; },
+  reqcust: el => { const c = custById(el.value); Object.assign(D(), c ? {customerId:c.id, company:c.company, contact:c.name} : {customerId:''}); }
+};
+
+/* ── Delegation ── */
+document.addEventListener('click', e => {
+  const j = e.target.closest('[data-jump]'); if(j){ jumpKey(j.dataset.jump); return; }
+  const a = e.target.closest('[data-act],[data-go]'); if(!a || a.disabled) return;
+  if(a.tagName==='A' || a.dataset.go) e.preventDefault();
+  if(a.dataset.act){ if(a.dataset.act==='followup') return; e.stopPropagation(); ACT[a.dataset.act]?.(a, e); return; }
+  const p = a.dataset.p ? JSON.parse(a.dataset.p) : (a.dataset.id ? {id:a.dataset.id} : {});
+  e.stopPropagation(); go(a.dataset.go, p);
+});
+document.addEventListener('input', e => {
+  const el = e.target; const d = D(); if(!el.dataset.f || !d) return;
+  setPath(d, el.dataset.f, el.value); el.classList.remove('err');
+  if(el.hasAttribute('data-live') && $('#totals') && 'items' in d) $('#totals').outerHTML = totalsHTML(d);
+});
+document.addEventListener('change', e => {
+  const el = e.target;
+  if(el.dataset.act==='followup'){ leadById(el.dataset.id).followUp = el.value; render({keep:true}); toast(`Follow-up set for ${fdate(el.value)}`); return; }
+  if(el.dataset.pick && D()){ PICK[el.dataset.pick](el); render({keep:true}); return; }
+  if(el.tagName==='SELECT' && el.dataset.f && D()) setPath(D(), el.dataset.f, el.value);
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Presentation rail + notes (desktop only)
+   ═══════════════════════════════════════════════════════════════════════════ */
+const MAP = [
+  ['Home', [['home','Home'],['create','Create New (+)'],['account','My Account']]],
+  ['Quotes', [['quotes','Quotes list'],['quotes?Draft','Draft quotes'],['quote:Q-2418','Quote with trade-in & parts'],['quote:Q-2414','Rental quote'],['quoteform','New quote'],['quotepdf:Q-2418','Quote PDF']]],
+  ['Sales orders', [['orders?Sent','Sent orders'],['order:SO-1192','Draft order'],['orderform:Q-2418','Convert quote → order']]],
+  ['Stock', [['stock','Stock list'],['stockitem:S104','Machine detail']]],
+  ['Customers', [['customers','Customers'],['customerform','Add customer']]],
+  ['Leads & visits', [['leads','Sales leads'],['leads?show','Show leads'],['lead:L1','Lead detail'],['leadform','New sales lead'],['visits','Site visits'],['visitform','Add site visit']]],
+  ['Other', [['service','Parts & services'],['requests','Requested equipment']]]
+];
+function jumpKey(k){
+  if(k==='create'){ jump('home'); openCreate(); return; }
+  const [base, q] = k.split('?'); const [name, id] = base.split(':');
+  const p = name==='quoteform' ? {type:'sale'} : name==='orderform' ? {quoteId:id} : q==='show' ? {show:true} : q ? {status:q} : id ? {id} : {};
+  jump(name, p);
+}
+function renderRail(){
+  const r = here(); const p = r.p || {};
+  const cur = r.n + (p.id ? ':'+p.id : p.quoteId ? ':'+p.quoteId : '') + (p.status ? '?'+p.status : p.show ? '?show' : '');
+  $('#rail').innerHTML = `<img src="${LOGO}" alt="McCourt Equipment"><h1>Sales Quoting App</h1><p class="lede">Mobile wireframes · interactive. Tap anything in the phone, or jump to a screen.</p>
+    ${MAP.map(([g,items]) => `<h2>${g}</h2>${items.map(([k,l]) => `<button class="jump ${k===cur?'on':''}" data-jump="${k}">${l}</button>`).join('')}`).join('')}
+    <div class="foot">Prepared by DMC Consultancy Ltd. Nothing is saved — data resets on reload.</div>`;
+}
+const NOTES = {
+  home:['Home','Six tiles, + to create',['Quotes, Stock, Sales Leads, Site Visits, Parts & Services, Requested Equipment.','Badges show open quotes, follow-ups due, revisits and open requests.','The + button opens Create New: Quote, Sales Order, Sales Lead, Site Visit.','Account holds the counts — drafts, sent, completed — and the customer list.']],
+  account:['My Account','Everything counted, one tap to the list',['Quotes: drafts and sent.','Orders: drafts, sent to the office, completed.','Sales leads, show leads (trade shows like AGG1) and site visits — each with a quick Add.','Customers list and Add Customer.']],
+  quotes:['Quotes','Search once, act from the card',['Customer, model, total and rep on every card, with status and quote number.','View, Edit, Send (drafts only) and Convert straight from the list.','Converted quotes link to their sales order; expired ones get Re-quote.']],
+  quote:['Quote','Everything on one screen',['Sale or rental.','Custom items / parts listed separately.','Trade-in comes off before sales tax, as Texas allows.','Deposit shown up front: 10% on sale, or first month + freight on rental.']],
+  quotepdf:['Quote PDF','What the customer receives',['McCourt letterhead, HQ and all four yards in the footer.','Parts, trade-in and freight as their own lines.','Terms from the McCourt site: FOB La Grange, 10% deposit, one-month rental minimum.']],
+  quoteform:['New quote','Laid out like the current app',['Customer chosen from the list — or + Customer adds one without losing the quote.','Company name optional.','Item: pick a model from the McCourt range (fills brand, spec and price), or Enter Custom Product. Or pick a serial-numbered machine from stock.','Custom items / parts and Trade-in are optional sections, added with + Add.','Quote validity date, freight and sales tax (8.25% or exempt).','Save Quote, or → Order to save and go straight to the sales order.']],
+  orders:['Sales orders','Draft, sent, completed',['Opened from the My Account counts.','Every order comes from a quote, so nothing is typed twice.']],
+  order:['Sales order','Send it, then close it',['Draft orders can be sent to the office.','Sent orders are marked completed once delivered.']],
+  orderform:['Convert to order','Only what the quote didn\'t have',['Delivery date and site, warranty, deposit.','Deposit received and PDI request as switches.','Save as draft, or send to the office.','Stock machines on the quote are marked Sold or On rent.']],
+  stock:['Stock','One list, every yard',['Search plus two filters: brand, and New / Used / Rental fleet.','Months in stock on every card; amber edge at 6–12 months, red over 12.','Quote or Allocate on every card; held machines show as Allocated.']],
+  stockitem:['Machine','Detail + quick actions',['Sale price and monthly rental rate side by side.','Quote or Rent starts a pre-filled quote.']],
+  leads:['Leads','Sales leads and show leads',['Search and status filter.','Machine of interest, rep and 1–4 star priority on every card.','View, Edit and Quote on every card.','Show leads carry the show they came from.']],
+  lead:['Lead','Notes, follow-up and quotes together',['Add a note in one line.','Change the follow-up date from the card.','Shows whether the lead is a customer on file yet.']],
+  leadform:['Lead form','Same as the current app',['Customer from the list, or Enter Custom Customer.','Machine of interest from the McCourt range, or Enter Custom Product.','Status, priority 1–4, follow-up date.','Show leads also pick the trade show.']],
+  customers:['Customers','',['Search by name, company or email.','Tax-exempt customers flagged — their quotes default to exempt.']],
+  customerform:['Add customer','',['Name, phone, email, company, address, ZIP.','Sales tax exemption certificate instead of a VAT number.','Opened from + Customer on a quote, it drops the new customer straight onto the quote.']],
+  requests:['Requested equipment','What customers want that we haven\'t got',['Equipment wanted, new / used / rental, budget and needed-by date.','Match stock suggests available machines; a match marks it Found.','Quote starts a quote for that customer, with the matched machine if there is one.']],
+  requestform:['Request','',['Customer, what they want, budget, needed by, status.']],
+  visits:['Site visits','',['Revisit dates flagged when due.','Saving a visit adds a note on that customer\'s lead.']],
+  visitform:['Add site visit','Three fields',['Customer, what was discussed, revisit date.','Revisit date becomes the lead\'s next follow-up.']],
+  service:['Parts & services','Straight to the right desk',['Parts or service request in one form.','Machine down flags it as urgent and sends it to the 24/7 service line.']]
+};
+function renderNotes(name){
+  const x = NOTES[name] || NOTES.home;
+  $('#notes').innerHTML = `<h3>${x[0]}</h3><div class="t">${x[1]||x[0]}</div><ul>${x[2].map(l=>`<li>${esc(l)}</li>`).join('')}</ul>`;
+}
+
+/* Clock */
+const tick = () => { $('#clock').textContent = new Date().toLocaleTimeString('en-US',{hour:'numeric', minute:'2-digit'}).replace(/\s?[AP]M/,''); };
+tick(); setInterval(tick, 30000);
+render();
+</script>
+</body>
+</html>

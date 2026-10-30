@@ -1,0 +1,8 @@
+{
+  "name": "mccourtquotingdemo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "McCourt Equipment — sales quoting mobile app wireframes (quotes, stock, sales orders, leads, site visits)",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
